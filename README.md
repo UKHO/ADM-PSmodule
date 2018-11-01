@@ -89,7 +89,7 @@ $configObject = @{
               Users = @( 
                   $configData.Users.User1 # subdomain account
                   $configData.Users.User2 # subdomain2 account
-                  $configData.Users.User3 # Business domain account
+                  $configData.Users.User3 # subdomain account
               )
             }
           )
