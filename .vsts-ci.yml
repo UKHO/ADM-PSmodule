@@ -26,8 +26,8 @@ steps:
 - task: powershell@2
   displayName: 'Add public funtions to be exported'
   inputs:
-    filePath: ./'Build/Add-FunctionsToExport.ps1'
-    arguments: '-BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"'
+    filePath: ./Build/Add-FunctionsToExport.ps1
+    arguments: -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"
 
 - powershell: 'Set-ModuleAsPreRelease -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)'
   displayName: 'Set module as PreRelease if branch is not master'
