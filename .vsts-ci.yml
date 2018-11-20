@@ -4,15 +4,13 @@ resources:
 queue:
   name: NautilusBuild
 #Your build pipeline references an undefined variable named ‘NugetAPIKey’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-variables:
-  ModuleName: 'UKHO.ADM'
-  
+
 steps:
 # By default writes the results of  the tests to an NUnit XML file at $(Build.SourcesDirectory)\Test-Pester.XML
 - task: richardfennellBM.BM-VSTS-PesterRunner-Task.Pester-Task.Pester@6
   displayName: 'Run Pester Tests'
   inputs:
-    scriptFolder: '$(Build.SourcesDirectory)\$(ModuleName).Tests\Run-Tests.ps1'
+    scriptFolder: '$(Build.SourcesDirectory)\UKHO.ADM.Tests\Run-Tests.ps1'
  
 # Publish the NUnit XML
 - task: PublishTestResults@2
@@ -23,22 +21,11 @@ steps:
     mergeTestResults: true
     testRunTitle: '$(Build.DefinitionName) Pester Tests'
 
-- task: powershell@2
+- powershell : ./Build/Add-FunctionsToExport.ps1 -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
   displayName: 'Add public funtions to be exported'
-  inputs:
-    filePath: ./Build/Add-FunctionsToExport.ps1
-    arguments: -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"
 
-# - task: powershell@2
-#   displayName: 'Set module as PreRelease if branch is not master'
-#   inputs:
-#     filePath: ./Build/Set-ModuleAsPreRelease.ps1
-#     arguments: 
+- powershell: ./Build/Set-ModuleAsPreRelease.ps1 -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1" -Branch $(Build.SourceBranchName)
+  displayName: Set module as PreRelease if branch is not master
 
-- powershell: ./Build/Set-ModuleAsPreRelease.ps1 -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
-  displayName: 'Add-FunctionsToExport'
-
-
-# - powershell: ./Deploy/DeployToFeed.ps1
-#   arguments: '-RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetAPIKey) -ModuleFolderPath $(Build.SourcesDirectory)\$(ModuleName)'
-#   displayName: 'PowerShell Script'
+- powershell: ./Deploy/DeployToFeed.ps1 -RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey "" -ModuleFolderPath $(Build.SourcesDirectory)\UKHO.ADM
+  displayName: 'PowerShell Script'
