@@ -9,7 +9,7 @@ variables:
   
 steps:
 # By default writes the results of  the tests to an NUnit XML file at $(Build.SourcesDirectory)\Test-Pester.XML
-- tasks: richardfennellBM.BM-VSTS-PesterRunner-Task.Pester-Task.Pester@6
+- task: richardfennellBM.BM-VSTS-PesterRunner-Task.Pester-Task.Pester@6
   displayName: 'Run Pester Tests'
   inputs:
     scriptFolder: '$(Build.SourcesDirectory)\$(ModuleName).Tests\Run-Tests.ps1'
