@@ -1,4 +1,3 @@
-Remove-Module Pester -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
 Import-Module Pester -RequiredVersion 4.3.1
 
 Set-Location $PSScriptRoot
