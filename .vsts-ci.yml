@@ -23,9 +23,9 @@ steps:
     mergeTestResults: true
     testRunTitle: '$(Build.DefinitionName) Pester Tests'
 
-- powershell: ./'Build/Add-FunctionsToExport.ps1'
-  displayName: 'Add public funtions to be exported'
-  arguments: '-BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"'
+# - powershell: ./'Build/Add-FunctionsToExport.ps1'
+#   displayName: 'Add public funtions to be exported'
+#   arguments: '-BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"'
 
 - powershell: 'Set-ModuleAsPreRelease -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)'
   displayName: 'Set module as PreRelease if branch is not master'
