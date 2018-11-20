@@ -30,6 +30,6 @@ steps:
 - powershell: 'Set-ModuleAsPreRelease -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)'
   displayName: 'Set module as PreRelease if branch is not master'
 
-- powershell: ./Deploy/DeployToFeed.ps1
-  arguments: '-RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetAPIKey) -ModuleFolderPath $(Build.SourcesDirectory)\$(ModuleName)'
-  displayName: 'PowerShell Script'
+# - powershell: ./Deploy/DeployToFeed.ps1
+#   arguments: '-RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetAPIKey) -ModuleFolderPath $(Build.SourcesDirectory)\$(ModuleName)'
+#   displayName: 'PowerShell Script'
