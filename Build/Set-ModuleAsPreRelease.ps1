@@ -50,6 +50,7 @@ if($Branch -eq $ReleaseBranch){
     Write-Host "Branch $Branch for build is the same as the ReleaseBranch $ReleaseBranch. Module NOT marked as PreRelease"
 }
 else{    
-    Update-ModuleManifest -Path $ManifestFilePath -PreRelease $PreReleaseTag.Trim("-") -Verbose
-    Write-Host "Branch $Branch for build is different to ReleaseBranch $ReleaseBranch. Module marked as PreRelease"
+    $tag = $PreReleaseTag.Trim("-")
+    Update-ModuleManifest -Path $ManifestFilePath -PreRelease $tag -Verbose
+    Write-Host "Branch $Branch for build is different to ReleaseBranch $ReleaseBranch. Module marked as PreRelease with $tag"
 }
