@@ -3,6 +3,11 @@ param(
     [String]
     $ManifestFilePath)
 
+Write-Host "Manifest File Path is"
+Write-Host $ManifestFilePath
+Write-Host "Manifest File Path done"
+
+
 Import-Module UKHO.BuildTools
 
 Get-Module | Format-Table
