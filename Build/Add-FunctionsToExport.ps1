@@ -13,6 +13,6 @@ $wip = $ManifestFilePath | Split-Path
         $FunctionToExport += Get-ChildItem "$wip\functions" | Select -expand BaseName
     }
 
-Write-Host $FunctionToExport
+Write-Host "Following functions will be exported: $FunctionToExport"
 
 Add-FunctionsToExport -ManifestFilePath $ManifestFilePath -FunctionsToExport $FunctionToExport

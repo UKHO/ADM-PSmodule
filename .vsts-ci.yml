@@ -34,4 +34,4 @@ steps:
   displayName: Set module as PreRelease if branch is not master
 
 - powershell: ./Deploy/DeployToFeed.ps1 -RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetApiKey) -ModuleFolderPath $(Build.SourcesDirectory)\UKHO.ADM
-  displayName: 'PowerShell Script'
+  displayName: 'Publish module to feed'
