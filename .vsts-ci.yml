@@ -29,7 +29,7 @@ steps:
     filePath: ./Build/Add-FunctionsToExport.ps1
     arguments: -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"
 
-- powershell: 'Set-ModuleAsPreRelease -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)'
+- powershell: Set-ModuleAsPreRelease -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
   displayName: 'Set module as PreRelease if branch is not master'
 
 # - powershell: ./Deploy/DeployToFeed.ps1
