@@ -32,5 +32,5 @@ steps:
 - powershell: ./Build/Set-ModuleAsPreRelease.ps1 -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1" -Branch $(Build.SourceBranchName)
   displayName: Set module as PreRelease if branch is not master
 
-- powershell: ./Deploy/DeployToFeed.ps1 -RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey "" -ModuleFolderPath $(Build.SourcesDirectory)\UKHO.ADM
+- powershell: ./Deploy/DeployToFeed.ps1 -RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey "NotNeeded" -ModuleFolderPath $(Build.SourcesDirectory)\UKHO.ADM
   displayName: 'PowerShell Script'
