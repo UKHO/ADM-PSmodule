@@ -35,7 +35,7 @@ steps:
 #     filePath: ./Build/Set-ModuleAsPreRelease.ps1
 #     arguments: -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
 
-- powershell: ./Build/Add-FunctionsToExport.ps1 -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
+- powershell: ./Build/Set-ModuleAsPreRelease.ps1 -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
   displayName: 'Add-FunctionsToExport'
 
 
