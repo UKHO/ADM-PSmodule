@@ -29,11 +29,15 @@ steps:
     filePath: ./Build/Add-FunctionsToExport.ps1
     arguments: -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1"
 
-- task: powershell@2
-  displayName: 'Set module as PreRelease if branch is not master'
-  inputs:
-    filePath: ./Build/Set-ModuleAsPreRelease.ps1
-    arguments: -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
+# - task: powershell@2
+#   displayName: 'Set module as PreRelease if branch is not master'
+#   inputs:
+#     filePath: ./Build/Set-ModuleAsPreRelease.ps1
+#     arguments: -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
+
+- powershell: ./Build/Add-FunctionsToExport.ps1 -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
+  displayName: 'Add-FunctionsToExport'
+
 
 # - powershell: ./Deploy/DeployToFeed.ps1
 #   arguments: '-RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetAPIKey) -ModuleFolderPath $(Build.SourcesDirectory)\$(ModuleName)'
