@@ -33,9 +33,9 @@ steps:
 #   displayName: 'Set module as PreRelease if branch is not master'
 #   inputs:
 #     filePath: ./Build/Set-ModuleAsPreRelease.ps1
-#     arguments: -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
+#     arguments: 
 
-- powershell: ./Build/Set-ModuleAsPreRelease.ps1 -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
+- powershell: ./Build/Set-ModuleAsPreRelease.ps1 -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\$(ModuleName)\$(ModuleName).psd1" -Branch $(Build.SourceBranchName)
   displayName: 'Add-FunctionsToExport'
 
 
