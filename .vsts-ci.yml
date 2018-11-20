@@ -21,16 +21,14 @@ steps:
     mergeTestResults: true
     testRunTitle: '$(Build.DefinitionName) Pester Tests'
 
-# - powershell : ./Build/Add-FunctionsToExport.ps1 -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
-#   displayName: 'Add public funtions to be exported'
-# - task: powershell@2
-#   displayName: 'Add public funtions to be exported'
-#   inputs:
-#     filePath: ./Build/Add-FunctionsToExport.ps1
-#     arguments: -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
-
-- powershell: ./Build/Add-FunctionsToExport.ps1 -ManifestFilePath $(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1
+- task: powershell@2
   displayName: 'Add public funtions to be exported'
+  inputs:
+    filePath: ./Build/Add-FunctionsToExport.ps1
+    arguments: -BuildNumber $(Build.BuildId) -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
+
+# - powershell: ./Build/Add-FunctionsToExport.ps1 -ManifestFilePath $(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1
+#   displayName: 'Add public funtions to be exported'
 
 - powershell: ./Build/Set-ModuleAsPreRelease.ps1 -PreReleaseTag "dev$(Build.BuildId)" -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1" -Branch $(Build.SourceBranchName)
   displayName: Set module as PreRelease if branch is not master
