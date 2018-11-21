@@ -1,6 +1,8 @@
 param(
     $ManifestFilePath)
 
+Import-Module UKHO.BuildTools
+
 $wip = $ManifestFilePath | Split-Path
 
     if(Test-Path("$wip\functions")){
@@ -12,4 +14,6 @@ $wip = $ManifestFilePath | Split-Path
 
 Write-Host "Following functions will be exported: $FunctionToExport"
 
-Update-ModuleManifest -Path $ManifestFilePath -FunctionsToExport $FunctionToExport
+#Update-ModuleManifest -Path $ManifestFilePath -FunctionsToExport $FunctionToExport
+
+Add-FunctionsToExport -ManifestFilePath $ManifestFilePath -FunctionsToExport $FunctionToExport
