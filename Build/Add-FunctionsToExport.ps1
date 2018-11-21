@@ -1,6 +1,4 @@
 param(
-    [Parameter(Mandatory)]
-    [String]
     $ManifestFilePath)
 
 Import-Module UKHO.BuildTools
