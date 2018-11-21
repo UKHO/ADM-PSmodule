@@ -1,13 +1,15 @@
-param($BuildNumber,$ManifestFilePath)
-
-Import-Module UKHO.BuildTools
-
-Get-Module | Format-Table
+param(
+    $ManifestFilePath)
 
 $wip = $ManifestFilePath | Split-Path
 
     if(Test-Path("$wip\functions")){
-        $FunctionToExport += Get-ChildItem "$wip\functions" | Select -expand BaseName
+        $FunctionToExport += Get-ChildItem "$wip\functions" | Select-Object -expand BaseName
+    }
+    else {
+        Write-Error "Functions folder not found at $wip\functions. Cannot export any functions" 
     }
 
-Add-FunctionsToExport -ManifestFilePath $ManifestFilePath -FunctionsToExport $FunctionToExport
+Write-Host "Following functions will be exported: $FunctionToExport"
+
+Update-ModuleManifest -Path $ManifestFilePath -FunctionsToExport $FunctionToExport
