@@ -13,4 +13,4 @@ $wip = $ManifestFilePath | Split-Path
 
 Write-Host "Following functions will be exported: $FunctionToExport"
 
-Add-FunctionsToExport -ManifestFilePath $ManifestFilePath -FunctionsToExport $FunctionToExport
+Add-FunctionsToExport -FunctionsToExport $FunctionToExport -ManifestFilePath $ManifestFilePath
