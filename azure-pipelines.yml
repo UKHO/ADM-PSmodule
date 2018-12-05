@@ -6,7 +6,12 @@ trigger:
   branches:
     include:
       - refs/heads/*
-
+  paths:
+    include: 
+    - /
+    exclde:
+    - */*README.md
+  
 queue:
   name: NautilusBuild
 #Your build pipeline references an undefined variable named ‘NugetAPIKey’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
