@@ -10,7 +10,7 @@ trigger:
     include: 
     - /
     exclude:
-    - */*README.md
+    - README.md
 
 queue:
   name: NautilusBuild
