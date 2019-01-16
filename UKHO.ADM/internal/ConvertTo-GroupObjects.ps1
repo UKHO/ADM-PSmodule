@@ -20,6 +20,16 @@ function ConvertTo-GroupObjects {
                 $ggGroup = [ADGroup]::new($Settings.GroupPrefix, $Settings.Environment, $OU.Name, $GroupConfig.Name, "GG", $OU.DistinguishedName, $OU.Domain)
                 $dlGroup.ADGroupMembers += $ggGroup
 
+                # Add Other Groups
+                if ($null -ne $GroupConfig.Groups -and $GroupConfig.Groups.Count -gt 0) {
+                    $GroupConfig.Groups | ForEach-Object {
+                        $groupGroup = [ADGroup]::new($_.DistinguishedName, $OU.Domain)
+                        if (Check-GroupExists $groupGroup) {
+                            $dlGroup.ADGroupMembers += $groupGroup
+                        }
+                    }
+                }
+
                 $groups += $dlGroup
                 $groups += $ggGroup
             }
@@ -28,16 +38,27 @@ function ConvertTo-GroupObjects {
                 $ggGroup = [ADGroup]::new($Settings.GroupPrefix, $Settings.Environment, $OU.Name, $GroupConfig.Name, "GG", $OU.DistinguishedName, $OU.Domain)
                 $ugGroup.ADGroupMembers += $ggGroup
 
+                # Add Other Groups
+                if ($null -ne $GroupConfig.Groups -and $GroupConfig.Groups.Count -gt 0) {
+                    $GroupConfig.Groups | ForEach-Object {
+                        $groupGroup = [ADGroup]::new($_.DistinguishedName, $_.Domain)
+                        if (Check-GroupExists $groupGroup) {
+                            $ugGroup.ADGroupMembers += $groupGroup
+                        }
+                    }
+                }
+
                 $groups += $ugGroup
                 $groups += $ggGroup
             }
 
             #Add users
-            if ($GroupConfig.Users -ne $null -and $GroupConfig.Users.Count -gt 0) { 
-                $GroupConfig.Users | Where {$_.Domain -eq $OU.Domain.FQDN} | ForEach-Object {
+            if ($null -ne $GroupConfig.Users -and $GroupConfig.Users.Count -gt 0) { 
+                $GroupConfig.Users | Where-Object {$_.Domain -eq $OU.Domain.FQDN} | ForEach-Object {
                     $ggGroup.UserAccountMembers += ConvertTo-UserObject -UserConfig $_ -Domain $OU.Domain
                 }                
-            }        
+            }
+                   
 
             [ADGroup[]]$groups
         }
