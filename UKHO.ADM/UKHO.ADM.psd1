@@ -98,7 +98,7 @@
             Tags = @("AD","Active","Directory")
     
             # A URL to the license for this module.
-            LicenseUri = 'https://raw.githubusercontent.com/UKHO/ADM-PSmodule/master/LICENSE.md'
+            LicenseUri = 'https://raw.githubusercontent.com/UKHO/ADM-PSmodule/master/LICENSE'
     
             # A URL to the main website for this project.
             ProjectUri = ''
@@ -109,6 +109,7 @@
             # ReleaseNotes of this module
             ReleaseNotes = '
             4.0) Add GroupMembers to Group
+            3.0.4) LicenseUrl fix
             3.0.3) bugfix Getting groups from OU level
             3.0.2) bugfix of ADGroup Smash
             3.0) Credential added to domain

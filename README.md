@@ -123,3 +123,7 @@ Update-AD $configData $true
 
 - Start small!
   - This module will generate a lot of changes in Active Directory which can make it very hard to verify the module is doing what you expect. Make the smallest possible change first, probably something like creating an OU or creating a group, ensure the change is what you wanted and then move onto the next step. Doing it all at once will make it nearly impossible to check it has been done correctly.
+
+## Security Disclosure
+
+The UK Hydrographic Office (UKHO) collects and supplies hydrographic and geospatial data for the merchant shipping and the Royal Navy, to protect lives at sea. Maintaining the confidentially, integrity and availability of our services is paramount. Found a security bug? You might be saving a life by reporting it to us at UKHO-ITSO@ukho.gov.uk
