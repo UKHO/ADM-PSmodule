@@ -20,7 +20,7 @@ function ConvertTo-GroupObjects {
                 $ggGroup = [ADGroup]::new($Settings.GroupPrefix, $Settings.Environment, $OU.Name, $GroupConfig.Name, "GG", $OU.DistinguishedName, $OU.Domain)
                 $dlGroup.ADGroupMembers += $ggGroup
 
-                # Add Other Groups
+                # Adds groups that exist externally from configData
                 Get-NonADMGeneratedGroup -OU $OU -GroupConfig $GroupConfig -ggGroup $ggGroup
 
                 $groups += $dlGroup
@@ -31,7 +31,7 @@ function ConvertTo-GroupObjects {
                 $ggGroup = [ADGroup]::new($Settings.GroupPrefix, $Settings.Environment, $OU.Name, $GroupConfig.Name, "GG", $OU.DistinguishedName, $OU.Domain)
                 $ugGroup.ADGroupMembers += $ggGroup
 
-                # Add Other Groups
+                # Adds groups that exist externally from configData
                 Get-NonADMGeneratedGroup -OU $OU -GroupConfig $GroupConfig -ggGroup $ggGroup
 
                 $groups += $ugGroup
