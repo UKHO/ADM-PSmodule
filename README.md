@@ -35,6 +35,9 @@ A full example of an configuration object and invocation is below, the configura
   - Settings allows you to set a `GroupPrefix` and `Environment` if needed.
 - `Domain` (Array)
 - `Users` (Hashtable)
+- `Groups` (Hashtable)
+  - Groups are ADGroups that exist enternally to the `$configData`
+  - You are require to add the `DistinguishedName` of the ADGroup you wish to link
 - `OUStructure` (Array)
 
 The `Domain.Credential` property could be provided with a `Get-Credential`, There is a function `Get-ADAccount` this currently calls `Get-Credential`, but could be backed with PMP.
