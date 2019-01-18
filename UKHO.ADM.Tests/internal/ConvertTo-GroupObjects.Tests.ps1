@@ -57,7 +57,7 @@ InModuleScope $mut {
             }
             Mock Write-ErrorsAndTerminate {}
         
-            $domain = [ADDomain]::new("subdomain.fakedomain.com", "server1.subdomain.fakedomain.com", $true, "DC=subdomain,DC=fakedomain,DC=com",$cred)
+            $domain = [ADDomain]::new("subdomain.fakedomain.com", "server1.subdomain.fakedomain.com", $true, "DC=subdomain,DC=fakedomain,DC=com", $cred)
             $ou = [ADOrganisationalUnit]::new("Bar", "", $domain)
             [ADGroup[]]$ret = ConvertTo-GroupObjects -Settings @{ GroupPrefix = "Noo" } -GroupConfig @{Settings = @{ GroupPrefix = "Noo" }; Name = "Foo" } -OU $ou
 
@@ -76,6 +76,24 @@ InModuleScope $mut {
             It "should return a GG Group" {
                 ($ret | Where-Object {$_.Name -eq "AG_Noo_Bar_Foo-GG"}).Count | Should Be 1
             }
+        }
+    }
+
+    Context "When passed a valid Group configuration object with a Groups array" {
+        
+        Mock Validate-Group { 
+            $ret = [ValidationContext]::new()
+            return $ret
+        }
+        Mock Write-ErrorsAndTerminate {}
+        Mock Get-NonADMGeneratedGroup {}
+    
+        $domain = [ADDomain]::new("subdomain.fakedomain.com", "server1.subdomain.fakedomain.com", $true, "DC=subdomain,DC=fakedomain,DC=com", $cred)
+        $ou = [ADOrganisationalUnit]::new("Bar", "", $domain)
+        [ADGroup[]]$ret = ConvertTo-GroupObjects -Settings @{ GroupPrefix = "Noo" } -GroupConfig @{Settings = @{ GroupPrefix = "Noo" }; Name = "Foo"; Groups = @(@{DistinguishedName = "CN=Test,DC=subdomain,DC=fakedomain,DC=com"}); } -OU $ou
+
+        It "Calls Get-NonADMGeneratedGroup" {
+            Assert-MockCalled Get-NonADMGeneratedGroup -Times 1
         }
     }
 }
