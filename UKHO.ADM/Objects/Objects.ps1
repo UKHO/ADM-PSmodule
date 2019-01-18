@@ -32,13 +32,23 @@ class ADGroup {
         $this.ADGroupMembers = @()
         $this.UserAccountMembers = @()
         $this.Domain = $domain
+        $this.ADMGenerated = $true
     }
+
+    ADGroup([string]$DistinguishedName, [ADDomain]$domain) {
+        $this.DistinguishedName = $distinguishedName
+        $this.Name = $this.DistinguishedName.Split(',')[0].Replace("CN=","")
+        $this.Domain = $domain
+        $this.ADMGenerated = $false
+    }
+
     
     [string]$Name
     [ADUserAccount[]]$UserAccountMembers
     [ADGroup[]]$ADGroupMembers
     [string]$DistinguishedName
     [ADDomain] $Domain
+    [bool]$ADMGenerated
 
 }
 

@@ -49,7 +49,7 @@ function Traverse-Group {
             }
         }
 
-        foreach ($g in $group.ADGroupMembers) {
+        foreach ($g in $($group.ADGroupMembers | Where-Object ADMGenerated -eq $true) ) {
             $ADChanges = Traverse-Group $g $ADChanges
         }
     }

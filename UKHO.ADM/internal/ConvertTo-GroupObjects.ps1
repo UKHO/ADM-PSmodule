@@ -21,14 +21,7 @@ function ConvertTo-GroupObjects {
                 $dlGroup.ADGroupMembers += $ggGroup
 
                 # Add Other Groups
-                if ($null -ne $GroupConfig.Groups -and $GroupConfig.Groups.Count -gt 0) {
-                    $GroupConfig.Groups | ForEach-Object {
-                        $groupGroup = [ADGroup]::new($_.DistinguishedName, $OU.Domain)
-                        if (Check-GroupExists $groupGroup) {
-                            $dlGroup.ADGroupMembers += $groupGroup
-                        }
-                    }
-                }
+                Get-NonADMGeneratedGroup -OU $OU -GroupConfig $GroupConfig -ggGroup $ggGroup
 
                 $groups += $dlGroup
                 $groups += $ggGroup
@@ -39,14 +32,7 @@ function ConvertTo-GroupObjects {
                 $ugGroup.ADGroupMembers += $ggGroup
 
                 # Add Other Groups
-                if ($null -ne $GroupConfig.Groups -and $GroupConfig.Groups.Count -gt 0) {
-                    $GroupConfig.Groups | ForEach-Object {
-                        $groupGroup = [ADGroup]::new($_.DistinguishedName, $_.Domain)
-                        if (Check-GroupExists $groupGroup) {
-                            $ugGroup.ADGroupMembers += $groupGroup
-                        }
-                    }
-                }
+                Get-NonADMGeneratedGroup -OU $OU -GroupConfig $GroupConfig -ggGroup $ggGroup
 
                 $groups += $ugGroup
                 $groups += $ggGroup

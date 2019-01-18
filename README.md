@@ -14,6 +14,7 @@ The configuration object should be stored within a file, then before invoking th
 - Removing a group from a OU (See restriction below)
 - Add a user to a group
 - Removing a user from a group
+- Adding existing group, a group outside of the current ADM process, to a group
 
 ## Restrictions
 
@@ -76,6 +77,12 @@ $configObject = @{
         UserName = "user3"
     }
   }
+  Groups = @{
+    Group1 = @{
+      # Find the account you were interested in, copy the distinguishedName, which includes the DC identity
+      DistinguishedName = "CN=GroupName,OU=OtherACG,OU=UPA,DC=subdomain2,DC=domain,DC=com"
+    }
+  }
   OUStructure = @(
     @{
       Name   = "SC"
@@ -85,11 +92,14 @@ $configObject = @{
           Name   = "DevTeam"
           Groups = @( # Array of groups to be in this OU
             @{
-              Name  = "ProjectAdmins" # Name of Group
+              Name  = "ProjectAdmins" # Name of Group              
               Users = @( 
                   $configData.Users.User1 # subdomain account
                   $configData.Users.User2 # subdomain2 account
                   $configData.Users.User3 # subdomain account
+              )
+              Groups = @(
+                $configData.Groups.Group1
               )
             }
           )
