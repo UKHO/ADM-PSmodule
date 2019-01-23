@@ -1,4 +1,4 @@
-Import-Module Pester -RequiredVersion 4.3.1
+Import-Module Pester -RequiredVersion 4.6.0
 
 Set-Location $PSScriptRoot
 
