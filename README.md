@@ -40,7 +40,7 @@ A full example of an configuration object and invocation is below, the configura
   - You are require to add the `DistinguishedName` of the ADGroup you wish to link
 - `OUStructure` (Array)
 
-The `Domain.Credential` property could be provided with a `Get-Credential`, There is a function `Get-ADAccount` this currently calls `Get-Credential`, but could be backed with PMP.
+The `Domain.Credential` property could be provided with a `Get-Credential`.
 
 ```powershell
 $configObject = @{
@@ -55,7 +55,7 @@ $configObject = @{
       FQDN = "subdomain.domain.com"
       DomainController = "server1.subdomain.domain.com"
       DistinguishedName = "DC=subdomain,DC=domain,DC=com"
-      Credential = Get-ADAccount "AdminAccount" #This is a mandatory property of type pscredential
+      Credential = Get-Credential "AdminAccount" #This is a mandatory property of type pscredential
     }
     @{
       Name = "subdomain2"
@@ -63,7 +63,7 @@ $configObject = @{
       DomainController = "server2.subdomain2.domain.com"
       DistinguishedName = "DC=subdomain2,DC=domain,DC=com"
       IsPrimary = $true
-      Credential = Get-ADAccount "AdminAccount"
+      Credential = Get-Credential
     }
   )
   Users = @{
