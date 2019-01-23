@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '3.0.4'
+    ModuleVersion = '4.0.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -108,6 +108,7 @@
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            4.0) Add GroupMembers to Group
             3.0.4) LicenseUrl fix
             3.0.3) bugfix Getting groups from OU level
             3.0.2) bugfix of ADGroup Smash
