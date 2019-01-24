@@ -12,6 +12,10 @@ queue:
 #Your build pipeline references an undefined variable named ‘NugetAPIKey’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
 
 steps:
+- powershell: |
+    ./Build/Import-RequiredModules.ps1 -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
+  displayName: Makes sure required modules are installed on server where tests are run.
+
 # By default writes the results of  the tests to an NUnit XML file at $(Build.SourcesDirectory)\Test-Pester.XML
 - task: richardfennellBM.BM-VSTS-PesterRunner-Task.Pester-Task.Pester@6
   displayName: Run Pester Tests
@@ -26,9 +30,6 @@ steps:
     testResultsFiles: '$(Build.SourcesDirectory)\Test-Pester.XML'
     mergeTestResults: true
     testRunTitle: '$(Build.DefinitionName) Pester Tests'
-- powershell: |
-    ./Build/Import-RequiredModules.ps1 -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
-  displayName: Makes sure required modules are installed on server where tests are run.
 
 - powershell: |
     ./Build/Add-FunctionsToExport.ps1 -ManifestFilePath "$(Build.SourcesDirectory)\UKHO.ADM\UKHO.ADM.psd1"
