@@ -163,6 +163,7 @@ class ADChanges {
 
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
+            $shortName = $group.DistinguishedName.Split(",");
             Write-Color -LinesBefore 1 "`t+ CREATE GROUP $($group.DistinguishedName)" -Color Green
     
             $n = Split-GroupDistinguishedName $group.DistinguishedName
@@ -172,7 +173,7 @@ class ADChanges {
                 
                 try {
                     New-ADGroup -Name $group.Name -GroupScope $n.GroupScope -Path $n.Path -GroupCategory "Security" -Confirm:$false -Server $Group.Domain.DomainController -Credential $Group.Domain.Credential
-                    Write-Color -LinesBefore 2 "`t+ CREATED GROUP $($group.DistinguishedName)" -Color Green
+                    Write-Color -LinesBefore 1 "`t+ CREATED GROUP $($group.DistinguishedName)" -Color Green
                 }
                 catch {
                     Write-Color "`tx Failed to create group $($group.DistinguishedName) :" -Color Magenta
@@ -248,10 +249,11 @@ class ADChanges {
     }
 
     RemoveGroupMemberFromG($groupMember, [ADGroup] $group) {
-        $outputString = "REMOVE GROUP $($groupMember.DistinguishedName) FROM GROUP $($group.DistinguishedName)"
+        $outputString = "`t`tREMOVE GROUP $($groupMember.DistinguishedName) FROM GROUP $($group.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Color -LinesBefore 1 "`t~ Modify GROUP $($group.DistinguishedName)" -Color Yellow
+            $shortName = $group.DistinguishedName.Split(",");
+            Write-Color -LinesBefore 1 "`t~ Modify GROUP $($shortName[0])" -Color Yellow
             Write-Color "`t`t- REMOVE GROUP $($groupMember.DistinguishedName)" -Color Red
 
             $f = {
