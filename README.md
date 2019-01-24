@@ -6,6 +6,20 @@ The module has two stages "discovery" and "apply". During the "discovery" stage 
 
 The configuration object should be stored within a file, then before invoking the module, read the file will be read and pass the resulting the object into the module call. This should have the effect of being able to store our active directory configuration within Git.
 
+## Requirements
+
+### RSAT-Powershell Windows Feature
+
+The UKHO.ADM module sits on top of the RSAT-Powershell functions, unfortunately this cannot be added as a Required Module as it is specific to windows 10 and server 2016. 
+
+RSAT-Powershell can be installed on a windows 2016 server by calling:
+
+```powershell
+Add-WindowsFeature RSAT-AD-PowerShell 
+```
+
+for Windows 10, [you can install from a KB](https://www.microsoft.com/en-gb/download/details.aspx?id=45520)
+
 ## Capabilities
 
 - Creating OUs
