@@ -1,5 +1,7 @@
 param($ManifestFilePath)
 
+. $PSScriptRoot/Install-AcModule.ps1
+
 $Location = $ManifestFilePath | Split-Path
 
 $FileName = $ManifestFilePath | Split-Path -Leaf
