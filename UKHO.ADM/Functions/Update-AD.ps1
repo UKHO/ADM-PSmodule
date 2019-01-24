@@ -19,7 +19,7 @@ function Update-AD {
         Green,$fg,
         Red,$fg,
         Yellow,$fg,
-        Purple, $fg
+        Magenta, $fg
 
         $out = Generate-ConfigurationObject -ConfigData $cd 
 

@@ -148,7 +148,7 @@ class ADChanges {
                     Write-Colour -LinesBefore 2 "`t+ CREATED OU $($ADOrganisationalUnit.DistinguishedName)" -Color Green
                 }
                 Catch {
-                    Write-Color "x Failed to create OU $($ADOrganisationalUnit.DistinguishedName) :" -ForegroundColor Purple
+                    Write-Color "x Failed to create OU $($ADOrganisationalUnit.DistinguishedName) :" -ForegroundColor Magenta
                     Write-Color -LinesBefore 1 "`t`t$_" -Color White #Echos out the exceptions message
                     throw;         
                 }
@@ -175,7 +175,7 @@ class ADChanges {
                     Write-Color -LinesBefore 2 "`t+ CREATED GROUP $($group.DistinguishedName)" -Color Green
                 }
                 catch {
-                    Write-Color "`tx Failed to create group $($group.DistinguishedName) :" -Color Purple
+                    Write-Color "`tx Failed to create group $($group.DistinguishedName) :" -Color Magenta
                     Write-Color -LinesBefore 1 "`t`t$_" -Color White #Echos out the exceptions message
                     throw;
                 }
@@ -202,7 +202,7 @@ class ADChanges {
                     Write-Color "`t`t- REMOVED USER $($user.SamAccountName)" -Color Red 
                 }
                 catch {
-                    Write-Color "x Failed to remove user $($user.SamAccountName) from group $($group.DistinguishedName):" -Color Purple
+                    Write-Color "x Failed to remove user $($user.SamAccountName) from group $($group.DistinguishedName):" -Color Magenta
                     Write-Color "`t$_" -Color White #Echos out the exceptions message                    
                     throw;
                 }            
@@ -229,7 +229,7 @@ class ADChanges {
                         Write-Color "`t`t+ ADDED USER $($user.SamAccountName)" -Color Green
                     }
                     Catch {                
-                        Write-Color "x Failed to add user $($user.SamAccountName) to group $($group.DistinguishedName):" -Color Purple
+                        Write-Color "x Failed to add user $($user.SamAccountName) to group $($group.DistinguishedName):" -Color Magenta
                         Write-Color "`t$_" -Color White #Echos out the exceptions message
                         throw;
                     }                
@@ -242,7 +242,7 @@ class ADChanges {
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
     
-                Write-Color $outputString -Color Purple
+                Write-Color $outputString -Color Magenta
             }
         }
     }
@@ -262,7 +262,7 @@ class ADChanges {
                     Write-Color "`t`t- REMOVED GROUP $($groupMember.DistinguishedName)" -Color Red
                 }
                 catch {
-                    Write-Color "`tx Failed to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName):" -Color Purple
+                    Write-Color "`tx Failed to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName):" -Color Magenta
                     Write-Color "`t$_" -Color White #Echos out the exceptions message
                     throw;
                 }
@@ -289,7 +289,7 @@ class ADChanges {
                     Write-Color "`t`t+ Added Group $($groupMember.DistinguishedName)" -Color Green
                         }
                 catch {
-                    Write-Color "`tx Failed to add group $($groupMember.DistinguishedName) to group $($group.DistinguishedName):" -Color Purple
+                    Write-Color "`tx Failed to add group $($groupMember.DistinguishedName) to group $($group.DistinguishedName):" -Color Magenta
                     Write-Color "`t`t$_" -Color White #Echos out the exceptions message
                     throw;
                 }
