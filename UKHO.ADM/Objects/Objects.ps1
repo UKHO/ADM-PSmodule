@@ -149,7 +149,7 @@ class ADChanges {
                 }
                 Catch {
                     Write-Color "x Failed to create OU $($ADOrganisationalUnit.DistinguishedName) :" -ForegroundColor Magenta
-                    Write-Color -LinesBefore 1 "`t`t$_" -Color White #Echos out the exceptions message
+                    Write-Color -LinesBefore 1 "`t$_" -Color White #Echos out the exceptions message
                     throw;         
                 }
             }.GetNewClosure() 
@@ -175,8 +175,8 @@ class ADChanges {
                     Write-Color -LinesBefore 1 "`t+ CREATED GROUP $($group.Name)" -Color Green
                 }
                 catch {
-                    Write-Color "`tx Failed to create group $($group.DistinguishedName) :" -Color Magenta
-                    Write-Color -LinesBefore 1 "`t`t$_" -Color White #Echos out the exceptions message
+                    Write-Color "x Failed to create group $($group.DistinguishedName) :" -Color Magenta
+                    Write-Color -LinesBefore 1 "`t$_" -Color White #Echos out the exceptions message
                     throw;
                 }
     
