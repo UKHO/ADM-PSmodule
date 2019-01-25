@@ -27,7 +27,14 @@ function Update-AD {
 
         $ADChanges = Get-ADChanges($out)
 
-        Write-Color "Plan:" -Color Gray
+        Write-Color "Plan:`n",
+        "`tCreated OU: $($ADChanges.CreatedOUs)`n",
+        "`tCreated Groups: $($ADChanges.CreatedGroups)`n",
+        "`tAdded Groups: $($ADChanges.AddedGroups)`n",
+        "`tRemoved Groups: $($ADChanges.RemovedGroups)`n",
+        "`tRemoved Users: $($ADChanges.RemovedUsers)`n",
+        "`tAdded Users: $($ADChanges.AddedUsers)" `
+        -Color Gray
 
         if ($ApplyChanges) {
 

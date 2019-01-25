@@ -116,7 +116,13 @@ class ADChanges {
         $this.CreateOU = @()
         $this.RemoveGroupMemberFromGroup = @()
         $this.AddGroupMemberToGroup = @()
-
+        $this.RemovedUsers = 0
+        $this.AddedUsers = 0
+        $this.CreatedOUs = 0
+        $this.CreatedGroups = 0
+        $this.AddedGroups = 0
+        $this.RemovedGroups = 0
+        $this.DeletedGroups = 0
         $this.h = Get-Host 
     }
     
@@ -131,7 +137,13 @@ class ADChanges {
     [ScriptBlock[]]$CreateGroup
     [ScriptBlock[]]$CreateOU
     [ScriptBlock[]]$RemoveGroupMemberFromGroup
-
+    [int]$RemovedUsers
+    [int]$AddedUsers 
+    [int]$CreatedOUs
+    [int]$CreatedGroups
+    [int]$AddedGroups
+    [int]$RemovedGroups
+    [int]$DeletedGroups
     # UnsafeOperation and has to be done last
     [ScriptBlock[]]$AddGroupMemberToGroup
     
@@ -141,6 +153,7 @@ class ADChanges {
             $this.StringContent.Add($outputString, $true)
             Write-Color -LinesBefore 2 "`t+ CREATE OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
             Write-Color "`t`t$($ADOrganisationalUnit.DistinguishedName)" -Color White
+            $this.CreatedOUs += 1
 
             $f = {
                 Write-Verbose "Attempting to create OU $($ADOrganisationalUnit.DistinguishedName)"
@@ -167,7 +180,7 @@ class ADChanges {
             $this.StringContent.Add($outputString, $true)
             Write-Color -LinesBefore 1 "`t+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
             Write-Color "`t`t $($group.DistinguishedName)" -Color White
-
+            $this.CreatedGroups += 1
             $n = Split-GroupDistinguishedName $group.DistinguishedName
     
             $f = {
@@ -198,7 +211,7 @@ class ADChanges {
             Write-Color "`t~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
             Write-Color "`t`t$($group.DistinguishedName)" -Color White
             Write-Color "`t`t- Remove User $($user.SamAccountName)" -Color Red
-        
+            $this.RemovedUsers += 1
             $f = {
                 Write-Verbose "Attempting to remove user $($user.SamAccountName) from group $($group.DistinguishedName)"
                 try {
@@ -227,7 +240,7 @@ class ADChanges {
                 Write-Color -LinesBefore 1 "`t~Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
                 Write-Color "`t`t $($group.DistinguishedName)" -Color White            
                 Write-Color "`t`t+ Add User $($user.SamAccountName)" -Color Green
-    
+                $this.AddedUsers += 1
                 $f = {
                     Write-Verbose "Attempting to add user $($user.SamAccountName) to group $($group.DistinguishedName)"
                     try {                                        
@@ -262,6 +275,7 @@ class ADChanges {
             Write-Color -LinesBefore 1 "`t~ Modify GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Yellow
             Write-Color "`t`t $($groupMember.DistinguishedName)" -Color White
             Write-Color "`t`t- REMOVE GROUP $($groupMember.Name)" -Color Red
+            $this.RemovedGroups += 1
 
             $f = {
                 Write-Verbose "Attempting to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName)"
@@ -289,7 +303,7 @@ class ADChanges {
             Write-Color -LinesBefore 1 "`t~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
             Write-Color "`t`t$($group.DistinguishedName)" -Color White
             Write-Color "`t`t+ Add Group $($groupMember.DistinguishedName)" -Color Green
-
+            $this.AddedGroups += 1
     
             $f = {
                 Write-Verbose "Attempting to add group member $($groupMember.DistinguishedName) to group $($group.DistinguishedName)"
