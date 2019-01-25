@@ -211,6 +211,8 @@ class ADChanges {
             Write-Color "`t~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
             Write-Color "`t`t$($group.DistinguishedName)" -Color White
             Write-Color "`t`t- Remove User $($user.UPN)" -Color Red
+            Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
+
             $this.RemovedUsers += 1
             $f = {
                 Write-Verbose "Attempting to remove user $($user.SamAccountName) from group $($group.DistinguishedName)"
@@ -219,6 +221,7 @@ class ADChanges {
                     Write-Color -LinesBefore 1 "`t~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
                     Write-Color "`t`t $($group.DistinguishedName)" -Color White
                     Write-Color "`t`t- REMOVED USER $($user.UPN)" -Color Red 
+                    Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
                 }
                 catch {
                     Write-Color "x Failed to remove user $($user.SamAccountName) from group $($group.DistinguishedName):" -Color Magenta
@@ -240,14 +243,16 @@ class ADChanges {
                 Write-Color -LinesBefore 1 "`t~Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
                 Write-Color "`t`t $($group.DistinguishedName)" -Color White            
                 Write-Color "`t`t+ Add User $($user.UPN)" -Color Green
+                Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
                 $this.AddedUsers += 1
                 $f = {
                     Write-Verbose "Attempting to add user $($user.SamAccountName) to group $($group.DistinguishedName)"
                     try {                                        
                         Add-ADGroupMember -Identity $group.DistinguishedName -Members $user.SamAccountName -Confirm:$false -Server $User.Domain.DomainController -Credential $User.Domain.Credential
                         Write-Color -LinesBefore 1 "`t~Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                        Write-Color "`t`t $($group.DistinguishedName)" -Color White
+                        Write-Color "`t`t$($group.DistinguishedName)" -Color White
                         Write-Color "`t`t+ ADDED USER $($user.UPN)" -Color Green
+                        Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
                     }
                     Catch {                
                         Write-Color "x Failed to add user $($user.SamAccountName) to group $($group.DistinguishedName):" -Color Magenta
@@ -274,7 +279,8 @@ class ADChanges {
             $this.StringContent.Add($outputString, $true)
             Write-Color -LinesBefore 1 "`t~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
             Write-Color "`t`t $($group.DistinguishedName)" -Color White
-            Write-Color "`t`t- REMOVE GROUP $($groupMember.Name)" -Color Red
+            Write-Color "`t`t- REMOVE GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
+            Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
             $this.RemovedGroups += 1
 
             $f = {
@@ -283,7 +289,8 @@ class ADChanges {
                     Remove-ADGroupMember -Identity $group.DistinguishedName -Members $groupMember.DistinguishedName -Confirm:$false -Server $group.Domain.DomainController -Credential $group.Domain.Credential # Remove the the groupMember AD object to the group
                     Write-Color -LinesBefore 1 "`t~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
                     Write-Color"`t`t$($group.DistinguishedName)" -Color White
-                    Write-Color "`t`t- REMOVED GROUP $($groupMember.DistinguishedName)" -Color Red
+                    Write-Color "`t`t- REMOVED GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
+                    Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
                 }
                 catch {
                     Write-Color "`tx Failed to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName):" -Color Magenta
@@ -302,7 +309,8 @@ class ADChanges {
             $this.StringContent.Add($outputString, $true)
             Write-Color -LinesBefore 1 "`t~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
             Write-Color "`t`t$($group.DistinguishedName)" -Color White
-            Write-Color "`t`t+ Add Group $($groupMember.DistinguishedName)" -Color Green
+            Write-Color "`t`t+ Add Group $($groupMember.Name) on $($groupMember.Domain.DistinguishedName)" -Color Green
+            Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
             $this.AddedGroups += 1
     
             $f = {
@@ -312,7 +320,8 @@ class ADChanges {
                     Add-ADGroupMember -Identity $group.DistinguishedName -Members $gm -Confirm:$false -Server $group.Domain.DomainController -Credential $group.Domain.Credential # Add the the groupMember AD object to the group
                     Write-Color -LinesBefore 1 "`t~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
                     Write-Color "`t`t$($group.DistinguishedName)" -Color White
-                    Write-Color "`t`t+ Added Group $($groupMember.DistinguishedName)" -Color Green
+                    Write-Color "`t`t+ Added Group $($groupMember.DistinguishedName) on $($groupMember.Domain.DistinguishedName)" -Color Green
+                    Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
                         }
                 catch {
                     Write-Color "`tx Failed to add group $($groupMember.DistinguishedName) to group $($group.DistinguishedName):" -Color Magenta
