@@ -274,7 +274,7 @@ class ADChanges {
     }
 
     RemoveGroupMemberFromG($groupMember, [ADGroup] $group) {
-        $outputString = "`t`tREMOVE GROUP $($groupMember.DistinguishedName) FROM GROUP $($group.DistinguishedName)"
+        $outputString = "REMOVE GROUP $($groupMember.DistinguishedName) FROM GROUP $($group.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
             Write-Color -LinesBefore 1 "`t~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
