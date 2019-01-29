@@ -6,7 +6,7 @@ function Update-AD {
     )
     begin {}
     process {
-        Write-Color "A change plan has been geneated and is show below.`n" -Color White
+        Write-Color "A summary has been geneated and is show below.`n" -Color White
         Write-Color "Actions are indicated with the following symbols:`n" -Color White
         Write-Color "`t+", " adding or creating`n" -Color Green, White
         Write-Color "`t-", " removing or deleting`n" -Color Red, White
@@ -19,7 +19,7 @@ function Update-AD {
 
         $ADChanges = Get-ADChanges($out)
 
-        Write-Color "Plan:`n",
+        Write-Color "Summary:`n",
         "`tCreated OU: $($ADChanges.CreatedOUs)`n",
         "`tCreated Groups: $($ADChanges.CreatedGroups)`n",
         "`tAdded Groups: $($ADChanges.AddedGroups)`n",
