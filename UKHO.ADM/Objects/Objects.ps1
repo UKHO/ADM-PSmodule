@@ -267,7 +267,7 @@ class ADChanges {
             $outputString = "$($user.UPN) does not exist, will not be created so cannot be added to $($group.DistinguishedName)"
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
-                Write-Color "x Failed to add user $($user.UPN) to group $($group.Name) on $($group.Domain.DistinguishedName):" -Color Magenta                        
+                Write-Color "x Failed to add user $($user.UPN) to group $($group.Name) on $($group.Domain.DistinguishedName):" -Color Magenta
                 Write-Color "`t$outputString" -Color Magenta
             }
         }
