@@ -9,8 +9,8 @@ function Update-AD {
         Write-Color "Actions are indicated with the following symbols:`n" -Color White
         Write-Color "`t+", " adding or creating`n" -Color Green, White
         Write-Color "`t-", " removing or deleting`n" -Color Red, White
-        Write-Color "`t~", " modification or change`n" - Color Yellow, White
-        Write-Color "`tx", " errors have occurred`n"  - Color Magenta, White
+        Write-Color "`t~", " modification or change`n" -Color Yellow, White
+        Write-Color "`tx", " errors have occurred`n"  -Color Magenta, White
 
         $out = Generate-ConfigurationObject -ConfigData $cd 
 
