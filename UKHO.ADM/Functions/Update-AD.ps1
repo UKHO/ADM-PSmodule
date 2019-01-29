@@ -6,18 +6,12 @@ function Update-AD {
     )
     begin {}
     process {
-        Write-Color "A change plan has been geneated and is show below.`n",
-        "Actions are indicated with the following symbols:`n",
-        "`t+"," adding or creating`n",
-        "`t-"," removing or deleting`n",
-        "`t~"," modification or change`n",
-        "`tx", " errors have occurred`n" `
-        -Color White, 
-        White,
-        Green,White,
-        Red,White,
-        Yellow,White,
-        Magenta, White
+        Write-Color "A change plan has been geneated and is show below.`n" -Color White
+        Write-Color "Actions are indicated with the following symbols:`n" -Color White
+        Write-Color "`t+", " adding or creating`n" -Color Green, White
+        Write-Color "`t-", " removing or deleting`n" -Color Red, White
+        Write-Color "`t~", " modification or change`n" - Color Yellow, White
+        Write-Color "`tx", " errors have occurred`n"  - Color Magenta, White
 
         $out = Generate-ConfigurationObject -ConfigData $cd 
 
@@ -32,7 +26,7 @@ function Update-AD {
         "`tRemoved Groups: $($ADChanges.RemovedGroups)`n",
         "`tRemoved Users: $($ADChanges.RemovedUsers)`n",
         "`tAdded Users: $($ADChanges.AddedUsers)" `
-        -Color Gray
+            -Color Gray
 
         if ($ApplyChanges) {
 
