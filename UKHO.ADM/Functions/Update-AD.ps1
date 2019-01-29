@@ -6,20 +6,18 @@ function Update-AD {
     )
     begin {}
     process {
-        $fg = "White"
-
         Write-Color "A change plan has been geneated and is show below.`n",
         "Actions are indicated with the following symbols:`n",
         "`t+"," adding or creating`n",
         "`t-"," removing or deleting`n",
         "`t~"," modification or change`n",
         "`tx", " errors have occurred`n" `
-        -Color $fg, 
-        $fg,
-        Green,$fg,
-        Red,$fg,
-        Yellow,$fg,
-        Magenta, $fg
+        -Color White, 
+        White,
+        Green,White,
+        Red,White,
+        Yellow,White,
+        Magenta, White
 
         $out = Generate-ConfigurationObject -ConfigData $cd 
 
