@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '6.0.0'
+    ModuleVersion = '5.1.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -104,11 +104,11 @@
             ProjectUri = ''
     
             # A URL to an icon representing this module.
-            # IconUri = ''
+            # IconUri = '
     
             # ReleaseNotes of this module
             ReleaseNotes = '
-            6.0) Improvements to logging formats
+            5.1) Improvements to logging formats
             5.0) Removed Get-ADAccount function from ADM
             4.0) Add GroupMembers to Group
             3.0.4) LicenseUrl fix
