@@ -10,13 +10,17 @@ The configuration object should be stored within a file, then before invoking th
 
 ### RSAT-Powershell Windows Feature
 
-The UKHO.ADM module sits on top of the RSAT-Powershell functions, unfortunately this cannot be added as a Required Module as it is specific to windows 10 and server 2016. 
+The UKHO.ADM module uses RSAT-PowerShell functions. These functions are only available after installing [RSAT](https://support.microsoft.com/en-gb/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems) and cannot be downloaded from PsGallery.
 
-RSAT-Powershell can be installed on a windows 2016 server by calling:
+#### Install RSAT on a Windows Server
 
 ```powershell
-Add-WindowsFeature RSAT-AD-PowerShell 
+Add-WindowsFeature RSAT-AD-PowerShell
 ```
+
+#### Install RSAT on a Windows Desktop
+
+Install relevant version for your [Windows Desktop version](https://support.microsoft.com/en-gb/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems).
 
 for Windows 10, [you can install from a KB](https://www.microsoft.com/en-gb/download/details.aspx?id=45520)
 
