@@ -1,5 +1,3 @@
-Import-Module Pester -RequiredVersion 4.3.1
-
 Set-Location $PSScriptRoot
 
 $mut = "UKHO.ADM"

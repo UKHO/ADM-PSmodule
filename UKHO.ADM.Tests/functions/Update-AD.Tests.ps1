@@ -2,7 +2,7 @@ InModuleScope $mut {
     Describe "Update-AD" {
         Context "with valid cd" {
             Mock Generate-ConfigurationObject       
-            Mock Get-ADChanges
+            Mock Get-ADChanges { return @{ "CreatedOUs" = 1}}
             Update-AD -cd @{}
             It "Should Call Generate-ConfigurationObject" {
                 Assert-MockCalled Generate-ConfigurationObject

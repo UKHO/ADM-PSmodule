@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '5.0.0'
+    ModuleVersion = '5.1.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -51,7 +51,7 @@
     # ProcessorArchitecture = ''
     
     # Modules that must be imported into the global environment prior to importing this module
-    # RequiredModules = @()
+    RequiredModules = @(@{ModuleName = "PSWriteColor";ModuleVersion="0.83"})
     
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
@@ -104,10 +104,11 @@
             ProjectUri = ''
     
             # A URL to an icon representing this module.
-            # IconUri = ''
+            # IconUri = '
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            5.1) Improvements to logging formats
             5.0) Removed Get-ADAccount function from ADM
             4.0) Add GroupMembers to Group
             3.0.4) LicenseUrl fix
