@@ -34,7 +34,7 @@ function Update-AD {
             Write-Host ""
             Write-Host ""
 
-            Write-Color -Line "UKHO.ADM will now apply the changes" -Color Blue
+            Write-Color "UKHO.ADM will now apply the changes" -Color Blue
 
             $ADChanges.ApplyChanges()        
         }
