@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '5.1.0'
+    ModuleVersion = '5.1.1'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -108,6 +108,7 @@
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            5.1.1) fixed parameter on Write-Color call
             5.1) Improvements to logging formats
             5.0) Removed Get-ADAccount function from ADM
             4.0) Add GroupMembers to Group
