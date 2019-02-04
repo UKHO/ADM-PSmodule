@@ -108,6 +108,7 @@
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            5.1.2) implementing Write-Color better
             5.1.1) fixed parameter on Write-Color call
             5.1) Improvements to logging formats
             5.0) Removed Get-ADAccount function from ADM
