@@ -151,20 +151,20 @@ class ADChanges {
         $outputString = "CREATE OU $($ADOrganisationalUnit.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Color -LinesBefore 2 "`t+ CREATE OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
-            Write-Color "`t`t$($ADOrganisationalUnit.DistinguishedName)" -Color White
+            Write-Color -LinesBefore 2 -StartTab 1 "+ CREATE OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
+            Write-Color -StartTab 2 "$($ADOrganisationalUnit.DistinguishedName)" -Color White
             $this.CreatedOUs += 1
 
             $f = {
                 Write-Verbose "Attempting to create OU $($ADOrganisationalUnit.DistinguishedName)"
                 try {
                     New-ADOrganizationalUnit $ADOrganisationalUnit.Name -Path $ADOrganisationalUnit.ParentOrganistaionalUnit -Server $ADOrganisationalUnit.Domain.DomainController -Credential $ADOrganisationalUnit.Domain.Credential
-                    Write-Colour -LinesBefore 2 "`t+ CREATED OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
-                    Write-Colour "`t`t$($ADOrganisationalUnit.DistinguishedName)" -Color White
+                    Write-Colour -LinesBefore 2 -StartTab 1 "+ CREATED OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
+                    Write-Colour -StartTab 2 "$($ADOrganisationalUnit.DistinguishedName)" -Color White
                 }
                 Catch {
                     Write-Color "x Failed to create OU $($ADOrganisationalUnit.DistinguishedName) :" -ForegroundColor Magenta
-                    Write-Color -LinesBefore 1 "`t$_" -Color White #Echos out the exceptions message
+                    Write-Color -LinesBefore 1 -StartTab 1 "$_" -Color White #Echos out the exceptions message
                     throw;         
                 }
             }.GetNewClosure() 
@@ -178,8 +178,8 @@ class ADChanges {
 
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Color -LinesBefore 1 "`t+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
-            Write-Color "`t`t $($group.DistinguishedName)" -Color White
+            Write-Color -LinesBefore 1 -StartTab 1 "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
+            Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
             $this.CreatedGroups += 1
             $n = Split-GroupDistinguishedName $group.DistinguishedName
     
@@ -188,12 +188,12 @@ class ADChanges {
                 
                 try {
                     New-ADGroup -Name $group.Name -GroupScope $n.GroupScope -Path $n.Path -GroupCategory "Security" -Confirm:$false -Server $Group.Domain.DomainController -Credential $Group.Domain.Credential
-                    Write-Color -LinesBefore 1 "`t+ CREATED GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
-                    Write-Color "`t`t $($group.DistinguishedName)" -Color White
+                    Write-Color -LinesBefore 1 -StartTab 1 "+ CREATED GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
+                    Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
                 }
                 catch {
                     Write-Color "x Failed to create group $($group.DistinguishedName) :" -Color Magenta
-                    Write-Color -LinesBefore 1 "`t$_" -Color White #Echos out the exceptions message
+                    Write-Color -LinesBefore 1 -StartTab 1 "$_" -Color White #Echos out the exceptions message
                     throw;
                 }
     
@@ -208,24 +208,24 @@ class ADChanges {
 
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Color "`t~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-            Write-Color "`t`t$($group.DistinguishedName)" -Color White
-            Write-Color "`t`t- Remove User $($user.UPN)" -Color Red
-            Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
+            Write-Color -StartTab 1 "~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+            Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+            Write-Color -StartTab 2 "- Remove User $($user.UPN)" -Color Red
+            Write-Color -StartTab 3 "$($user.DistinguishedName)" -Color White
 
             $this.RemovedUsers += 1
             $f = {
                 Write-Verbose "Attempting to remove user $($user.SamAccountName) from group $($group.DistinguishedName)"
                 try {
                     Remove-ADGroupMember -Identity $group.DistinguishedName -Members $user.SamAccountName -Confirm:$false -Server $group.Domain.DomainController  -Credential $group.Domain.Credential
-                    Write-Color -LinesBefore 1 "`t~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                    Write-Color "`t`t $($group.DistinguishedName)" -Color White
-                    Write-Color "`t`t- REMOVED USER $($user.UPN)" -Color Red 
-                    Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
+                    Write-Color -LinesBefore 1 -StartTab 1 "~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+                    Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    Write-Color -StartTab 2 "- REMOVED USER $($user.UPN)" -Color Red 
+                    Write-Color -StartTab 3 "$($user.DistinguishedName)" -Color White
                 }
                 catch {
                     Write-Color "x Failed to remove user $($user.SamAccountName) from group $($group.DistinguishedName):" -Color Magenta
-                    Write-Color "`t$_" -Color White #Echos out the exceptions message                    
+                    Write-Color -StartTab 1 "$_" -Color White #Echos out the exceptions message                    
                     throw;
                 }            
             }.GetNewClosure() 
@@ -240,23 +240,23 @@ class ADChanges {
     
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
-                Write-Color -LinesBefore 1 "`t~Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                Write-Color "`t`t $($group.DistinguishedName)" -Color White            
-                Write-Color "`t`t+ Add User $($user.UPN)" -Color Green
-                Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
+                Write-Color -LinesBefore 1 -StartTab 1 "~Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+                Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White            
+                Write-Color -StartTab 2 "+ Add User $($user.UPN)" -Color Green
+                Write-Color -StartTab 3 "$($user.DistinguishedName)" -Color White
                 $this.AddedUsers += 1
                 $f = {
                     Write-Verbose "Attempting to add user $($user.SamAccountName) to group $($group.DistinguishedName)"
                     try {                                        
                         Add-ADGroupMember -Identity $group.DistinguishedName -Members $user.SamAccountName -Confirm:$false -Server $User.Domain.DomainController -Credential $User.Domain.Credential
-                        Write-Color -LinesBefore 1 "`t~Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                        Write-Color "`t`t$($group.DistinguishedName)" -Color White
-                        Write-Color "`t`t+ ADDED USER $($user.UPN)" -Color Green
-                        Write-Color "`t`t`t$($user.DistinguishedName)" -Color White
+                        Write-Color -LinesBefore 1 -StartTab 1 "~Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+                        Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+                        Write-Color -StartTab 2 "+ ADDED USER $($user.UPN)" -Color Green
+                        Write-Color -StartTab 3 "$($user.DistinguishedName)" -Color White
                     }
                     Catch {                
                         Write-Color "x Failed to add user $($user.SamAccountName) to group $($group.DistinguishedName):" -Color Magenta
-                        Write-Color "`t$_" -Color White #Echos out the exceptions message
+                        Write-Color -StartTab 1 "$_" -Color White #Echos out the exceptions message
                         throw;
                     }                
                 }.GetNewClosure()         
@@ -268,7 +268,7 @@ class ADChanges {
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
                 Write-Color "x Failed to add user $($user.UPN) to group $($group.Name) on $($group.Domain.DistinguishedName):" -Color Magenta
-                Write-Color "`t$outputString" -Color Magenta
+                Write-Color -StartTab 1 "$outputString" -Color Magenta
             }
         }
     }
@@ -277,24 +277,24 @@ class ADChanges {
         $outputString = "REMOVE GROUP $($groupMember.DistinguishedName) FROM GROUP $($group.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Color -LinesBefore 1 "`t~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-            Write-Color "`t`t $($group.DistinguishedName)" -Color White
-            Write-Color "`t`t- REMOVE GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
-            Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
+            Write-Color -LinesBefore 1 -StartTab 1 "~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+            Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+            Write-Color -StartTab 2 "- REMOVE GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
+            Write-Color -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
             $this.RemovedGroups += 1
 
             $f = {
                 Write-Verbose "Attempting to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName)"
                 try {                
                     Remove-ADGroupMember -Identity $group.DistinguishedName -Members $groupMember.DistinguishedName -Confirm:$false -Server $group.Domain.DomainController -Credential $group.Domain.Credential # Remove the the groupMember AD object to the group
-                    Write-Color -LinesBefore 1 "`t~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                    Write-Color"`t`t$($group.DistinguishedName)" -Color White
-                    Write-Color "`t`t- REMOVED GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
-                    Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
+                    Write-Color -LinesBefore 1 -StartTab 1 "~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+                    Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    Write-Color -StartTab 2 "- REMOVED GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
+                    Write-Color -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
                 }
                 catch {
-                    Write-Color "`tx Failed to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName):" -Color Magenta
-                    Write-Color "`t$_" -Color White #Echos out the exceptions message
+                    Write-Color -StartTab 1 "x Failed to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName):" -Color Magenta
+                    Write-Color -StartTab 1 "$_" -Color White #Echos out the exceptions message
                     throw;
                 }
 
@@ -307,10 +307,10 @@ class ADChanges {
         $outputString = "ADD GROUP $($groupMember.DistinguishedName) TO GROUP $($group.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Color -LinesBefore 1 "`t~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-            Write-Color "`t`t$($group.DistinguishedName)" -Color White
-            Write-Color "`t`t+ Add Group $($groupMember.Name) on $($groupMember.Domain.DistinguishedName)" -Color Green
-            Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
+            Write-Color -LinesBefore 1 -StartTab 1 "~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+            Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+            Write-Color -StartTab 2 "+ Add Group $($groupMember.Name) on $($groupMember.Domain.DistinguishedName)" -Color Green
+            Write-Color -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
             $this.AddedGroups += 1
     
             $f = {
@@ -318,14 +318,14 @@ class ADChanges {
                 try {
                     $gm = Get-ADGroup -Identity $groupMember.DistinguishedName -Server $groupMember.Domain.DomainController # Get the actual AD object for the groupMember that needs to be added
                     Add-ADGroupMember -Identity $group.DistinguishedName -Members $gm -Confirm:$false -Server $group.Domain.DomainController -Credential $group.Domain.Credential # Add the the groupMember AD object to the group
-                    Write-Color -LinesBefore 1 "`t~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                    Write-Color "`t`t$($group.DistinguishedName)" -Color White
-                    Write-Color "`t`t+ Added Group $($groupMember.DistinguishedName) on $($groupMember.Domain.DistinguishedName)" -Color Green
-                    Write-Color "`t`t`t$($groupMember.DistinguishedName)" -Color White
+                    Write-Color -LinesBefore 1 -StartTab 1 "~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+                    Write-Color -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    Write-Color -StartTab 2 "+ Added Group $($groupMember.DistinguishedName) on $($groupMember.Domain.DistinguishedName)" -Color Green
+                    Write-Color -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
                         }
                 catch {
-                    Write-Color "`tx Failed to add group $($groupMember.DistinguishedName) to group $($group.DistinguishedName):" -Color Magenta
-                    Write-Color "`t`t$_" -Color White #Echos out the exceptions message
+                    Write-Color -StartTab 1 "x Failed to add group $($groupMember.DistinguishedName) to group $($group.DistinguishedName):" -Color Magenta
+                    Write-Color -StartTab 2 "$_" -Color White #Echos out the exceptions message
                     throw;
                 }
             }.GetNewClosure()         
