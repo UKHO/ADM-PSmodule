@@ -6,35 +6,29 @@ function Update-AD {
     )
     begin {}
     process {
-        Write-Color "Actions are indicated with the following symbols:`n" -Color White
-        Write-Color "`t+", " adding or creating`n" -Color Green, White
-        Write-Color "`t-", " removing or deleting`n" -Color Red, White
-        Write-Color "`t~", " modification or change`n" -Color Yellow, White
-        Write-Color "`tx", " errors have occurred`n"  -Color Magenta, White
+        Write-Color -LinesBefore 1 "Actions are indicated with the following symbols:" -Color White
+        Write-Color -StartTab 1 "+", " adding or creating" -Color Green, White
+        Write-Color -StartTab 1 "-", " removing or deleting" -Color Red, White
+        Write-Color -StartTab 1 "~", " modification or change" -Color Yellow, White
+        Write-Color -StartTab 1 "x", " errors have occurred"  -Color Magenta, White
 
         $out = Generate-ConfigurationObject -ConfigData $cd 
 
-        Write-Color "UKHO.ADM will perform the following changes:" -Color Blue
+        Write-Color -LinesBefore 1 "UKHO.ADM will perform the following changes:" -Color Blue
 
         $ADChanges = Get-ADChanges($out)
 
-        Write-Color "Change Summary:`n",
-        "`tCreated OU: $($ADChanges.CreatedOUs)`n",
-        "`tCreated Groups: $($ADChanges.CreatedGroups)`n",
-        "`tAdded Groups: $($ADChanges.AddedGroups)`n",
-        "`tRemoved Groups: $($ADChanges.RemovedGroups)`n",
-        "`tRemoved Users: $($ADChanges.RemovedUsers)`n",
-        "`tAdded Users: $($ADChanges.AddedUsers)" `
-            -Color Gray
+        Write-Color -LinesBefore 1 "Change Summary:" -Color Gray
+        Write-Color -StartTab 1 "Created OU: $($ADChanges.CreatedOUs)" -Color Gray
+        Write-Color -StartTab 1 "Created Groups: $($ADChanges.CreatedGroups)" -Color Gray
+        Write-Color -StartTab 1 "Added Groups: $($ADChanges.AddedGroups)" -Color Gray
+        Write-Color -StartTab 1 "Removed Groups: $($ADChanges.RemovedGroups)" -Color Gray
+        Write-Color -StartTab 1 "Removed Users: $($ADChanges.RemovedUsers)" -Color Gray
+        Write-Color -StartTab 1 "Added Users: $($ADChanges.AddedUsers)" -Color Gray
 
         if ($ApplyChanges) {
 
-            Write-Host ""
-            Write-Host ""
-            Write-Host ""
-            Write-Host ""
-
-            Write-Color "UKHO.ADM will now apply the changes" -Color Blue
+            Write-Color -LinesBefore 4 "UKHO.ADM will now apply the changes" -Color Blue
 
             $ADChanges.ApplyChanges()        
         }
