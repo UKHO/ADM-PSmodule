@@ -22,17 +22,18 @@ Add-WindowsFeature RSAT-AD-PowerShell
 
 Install relevant version for your [Windows Desktop version](https://support.microsoft.com/en-gb/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems).
 
-### PSWriteColor (Required Module)
+### PSWriteColor
 
-When trying to test this locally you will not be able to load the ADM module unless you also have PSWriteColor (version 0.83)
+Local development requires PSWriteColor (version 0.83+) to be installed. When ADM is installed as a module(e.g. deploying on a server) PSWriteColor is installed automatically.
 
 #### Install PSWriteColor
 
+Run `./build/Import-RequiredModules.ps1` to install and import all required modules.
+
+Alternatively manually install PSWriteColor:
+
 ```powershell
 Install-Module PSWriteColor -RequiredVersion 0.83
-```
-
-**This is only needed for local testing, for use, the module is downloaded and installed as part of the request to have ADM installed**
 
 ## Capabilities
 
