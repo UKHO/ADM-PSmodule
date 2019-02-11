@@ -1,5 +1,14 @@
 InModuleScope $mut {
     Describe "Traverse-Group" {
+        $systemColours = @{
+            "info" = "White";
+            "adding" = "Green";
+            "remove" = "Red";
+            "modify" = "Yellow";
+            "error" = "Magenta";
+            "header" = "Blue";
+            "detail" = "Gray";
+        }
         $pwd = ConvertTo-SecureString "123" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential ("username", $pwd)
         Context "When a group which exists and has no sub groups or members is passed in" {
@@ -11,6 +20,7 @@ InModuleScope $mut {
             $group = [ADGroup]::new("DevTeam", "LIVE", "SC", "Readers", "DL", "OU=DevTeam,OU=UKHO,OU=SC,OU=ACG,OU=UPA,DC=subdomain,DC=fakedomain,DC=com", $domain) 
             $ADChanges = [ADChanges]::new()
 
+            $ADChanges.SystemColours = $systemColours
             Traverse-Group $group $ADChanges
 
             It "Checks the group exists" {
@@ -46,6 +56,7 @@ InModuleScope $mut {
             $group.UserAccountMembers += $user
             $group.UserAccountMembers += $user2
             $ADChanges = [ADChanges]::new()
+            $ADChanges.SystemColours = $systemColours
 
             Traverse-Group $group $ADChanges
 
@@ -84,6 +95,7 @@ InModuleScope $mut {
             $group.UserAccountMembers += $user2
 
             $ADChanges = [ADChanges]::new()
+            $ADChanges.SystemColours = $systemColours
 
             Traverse-Group $group $ADChanges
 
@@ -120,6 +132,7 @@ InModuleScope $mut {
             $group.UserAccountMembers += [ADUserAccount]::new("user3", $domain)
 
             $ADChanges = [ADChanges]::new()
+            $ADChanges.SystemColours = $systemColours
 
             Traverse-Group $group $ADChanges
 
@@ -155,6 +168,7 @@ InModuleScope $mut {
             $group.UserAccountMembers += [ADUserAccount]::new("user1", $domain)
 
             $ADChanges = [ADChanges]::new()
+            $ADChanges.SystemColours = $systemColours
 
             Traverse-Group $group $ADChanges
 
@@ -186,6 +200,7 @@ InModuleScope $mut {
             $group = [ADGroup]::new("DevTeam", "LIVE", "SC", "Readers", "DL", "OU=DevTeam,OU=UKHO,OU=SC,OU=ACG,OU=UPA,DC=subdomain,DC=fakedomain,DC=com", $domain) 
 
             $ADChanges = [ADChanges]::new()
+            $ADChanges.SystemColours = $systemColours
 
             Traverse-Group $group $ADChanges
 
@@ -222,6 +237,7 @@ InModuleScope $mut {
             $group.UserAccountMembers += [ADUserAccount]::new("user1", $domain)
 
             $ADChanges = [ADChanges]::new()
+            $ADChanges.SystemColours = $systemColours
 
             Traverse-Group $group $ADChanges
 
