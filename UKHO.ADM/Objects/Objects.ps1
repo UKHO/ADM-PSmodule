@@ -26,8 +26,8 @@ class ValidationContext {
 class ADGroup {    
     [string]$namingConvention = "AG_{0}_{1}_{2}_{3}-{4}"
 
-    ADGroup([string]$GroupPrefix,[string]$Environment, [string]$containerName, [string]$GroupName, [string]$groupLevel, [string]$currentADPath, [ADDomain]$domain) {
-        $this.Name = ($this.namingConvention -f $GroupPrefix, $Environment, $containerName, $GroupName, $groupLevel).Replace("__","_").Replace(" ","")
+    ADGroup([string]$GroupPrefix, [string]$Environment, [string]$containerName, [string]$GroupName, [string]$groupLevel, [string]$currentADPath, [ADDomain]$domain) {
+        $this.Name = ($this.namingConvention -f $GroupPrefix, $Environment, $containerName, $GroupName, $groupLevel).Replace("__", "_").Replace(" ", "")
         $this.DistinguishedName = ("CN={0},{1}" -f $this.Name, $currentADPath)
         $this.ADGroupMembers = @()
         $this.UserAccountMembers = @()
@@ -131,6 +131,7 @@ class ADChanges {
     # Having all the output in a single object means we can easily check if we have already encountered this exact "CREATE GROUP" step before.
     hidden $StringContent = @{} 
     hidden $h
+    hidden $lastAction = ""
 
     [ScriptBlock[]]$RemoveUserFromGroup
     [ScriptBlock[]]$AddUserToGroup
@@ -151,7 +152,8 @@ class ADChanges {
         $outputString = "CREATE OU $($ADOrganisationalUnit.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Colour -LinesBefore 2 -StartTab 1 "+ CREATE OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
+            $currentAction = "+ CREATE OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)"
+            Write-Colour -LinesBefore 2 -StartTab 1 $currentAction -Color Green
             Write-Colour -StartTab 2 "$($ADOrganisationalUnit.DistinguishedName)" -Color White
             $this.CreatedOUs += 1
 
@@ -170,6 +172,8 @@ class ADChanges {
             }.GetNewClosure() 
     
             $this.CreateOU += $f
+
+            $this.lastAction = $currentAction
         }
     }
 
@@ -178,7 +182,8 @@ class ADChanges {
 
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Colour -LinesBefore 1 -StartTab 1 "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
+            $currentAction = "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)"
+            Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Green
             Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
             $this.CreatedGroups += 1
             $n = Split-GroupDistinguishedName $group.DistinguishedName
@@ -200,6 +205,7 @@ class ADChanges {
             }.GetNewClosure() 
         
             $this.CreateGroup += $f
+            $this.lastAction = $currentAction
         }
     }
 
@@ -208,8 +214,11 @@ class ADChanges {
 
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Colour -StartTab 1 "~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-            Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+            $this.currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
+            if ($this.currentAction -ne $this.lastAction) {
+                Write-Colour -StartTab 1 $this.lastAction -Color Yellow
+                Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+            }
             Write-Colour -StartTab 2 "- Remove User $($user.UPN)" -Color Red
             Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color White
 
@@ -230,11 +239,11 @@ class ADChanges {
                 }            
             }.GetNewClosure() 
             
-           $this.RemoveUserFromGroup += $f
+            $this.RemoveUserFromGroup += $f
         }   
     }
 
-   AddUserToG([ADUserAccount]$user, [ADGroup] $group) {
+    AddUserToG([ADUserAccount]$user, [ADGroup] $group) {
         if (Check-UserExists $user) {        
             $outputString = "ADD USER $($user.UPN) TO GROUP $($group.DistinguishedName)"
     
@@ -322,7 +331,7 @@ class ADChanges {
                     Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
                     Write-Colour -StartTab 2 "+ Added Group $($groupMember.DistinguishedName) on $($groupMember.Domain.DistinguishedName)" -Color Green
                     Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
-                        }
+                }
                 catch {
                     Write-Colour -StartTab 1 "x Failed to add group $($groupMember.DistinguishedName) to group $($group.DistinguishedName):" -Color Magenta
                     Write-Colour -StartTab 2 "$_" -Color White #Echos out the exceptions message
@@ -333,25 +342,25 @@ class ADChanges {
         }
     }
 
-    ApplyChanges(){
+    ApplyChanges() {
         # Creates new OUs, groups, adds and removes users to groups
         foreach ($createO in $this.CreateOU) {
             Invoke-Scriptblock $createO
         }
 
-        foreach($createG in $this.CreateGroup){
+        foreach ($createG in $this.CreateGroup) {
             Invoke-Scriptblock $createG
         }
 
-        foreach($removeG in $this.RemoveUserFromGroup){
+        foreach ($removeG in $this.RemoveUserFromGroup) {
             Invoke-Scriptblock $removeG
         }
 
-        foreach($addU in $this.AddUserToGroup){
+        foreach ($addU in $this.AddUserToGroup) {
             Invoke-Scriptblock $addU
         }
 
-        foreach($RemoveGM in $this.RemoveGroupMemberFromGroup){
+        foreach ($RemoveGM in $this.RemoveGroupMemberFromGroup) {
             Invoke-Scriptblock $RemoveGM
         }
 
