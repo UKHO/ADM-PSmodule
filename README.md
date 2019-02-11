@@ -6,6 +6,36 @@ The module has two stages "discovery" and "apply". During the "discovery" stage 
 
 The configuration object should be stored within a file, then before invoking the module, read the file will be read and pass the resulting the object into the module call. This should have the effect of being able to store our active directory configuration within Git.
 
+## Requirements
+
+### RSAT-Powershell Windows Feature
+
+The UKHO.ADM module uses RSAT-PowerShell functions. These functions are only available after installing [RSAT](https://support.microsoft.com/en-gb/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems) and cannot be downloaded from PsGallery.
+
+#### Install RSAT on a Windows Server
+
+```powershell
+Add-WindowsFeature RSAT-AD-PowerShell
+```
+
+#### Install RSAT on a Windows Desktop
+
+Install relevant version for your [Windows Desktop version](https://support.microsoft.com/en-gb/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems).
+
+### PSWriteColor
+
+Local development requires PSWriteColor (version 0.83+) to be installed. When ADM is installed as a module(e.g. deploying on a server) PSWriteColor is installed automatically.
+
+#### Install PSWriteColor
+
+Run `./build/Import-RequiredModules.ps1` to install and import all required modules.
+
+Alternatively manually install PSWriteColor:
+
+```powershell
+Install-Module PSWriteColor -RequiredVersion 0.83
+```
+
 ## Capabilities
 
 - Creating OUs
