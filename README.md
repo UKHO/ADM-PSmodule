@@ -34,6 +34,7 @@ Alternatively manually install PSWriteColor:
 
 ```powershell
 Install-Module PSWriteColor -RequiredVersion 0.83
+```
 
 ## Capabilities
 
