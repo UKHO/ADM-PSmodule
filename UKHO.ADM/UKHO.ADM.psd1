@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '5.1.2'
+    ModuleVersion = '5.1.3'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -51,7 +51,7 @@
     # ProcessorArchitecture = ''
     
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules = @(@{ModuleName = "PSWriteColor";ModuleVersion="0.83"})
+    RequiredModules = @(@{ModuleName = "PSWriteColor";ModuleVersion="0.85"})
     
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
@@ -108,6 +108,7 @@
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            5.1.3) using PSWriteColor v0.85 to use Write-Colour call
             5.1.2) implementing Write-Color better
             5.1.1) fixed parameter on Write-Color call
             5.1) Improvements to logging formats
