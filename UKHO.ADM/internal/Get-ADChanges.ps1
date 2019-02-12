@@ -1,12 +1,10 @@
 function Get-ADChanges {
     [CmdletBinding()]
     param(
-        [ADDomain[]] $ADDomains,
-        [HashTable]$SystemColours
+        [ADDomain[]] $ADDomains
     )
     begin {
         $ADChanges = [ADChanges]::new()
-        $ADChanges.SystemColours = $SystemColours
     }
     process {
         $ADDomains | Sort-Object { $_.IsPrimary} -Descending | ForEach-Object {    

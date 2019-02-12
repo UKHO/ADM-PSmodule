@@ -110,7 +110,15 @@ class ADDomain {
 class ADChanges {
 
     ADChanges() {
-        $this.SystemColours = @{}
+        $this.SystemColours = @{
+            "info" = "White";
+            "adding" = "Green";
+            "remove" = "Red";
+            "modify" = "Yellow";
+            "error" = "Magenta";
+            "header" = "Blue";
+            "detail" = "Gray";
+        }
         $this.RemoveUserFromGroup = @()
         $this.AddUserToGroup = @()
         $this.CreateGroup = @()
