@@ -278,7 +278,7 @@ class ADChanges {
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
                 Write-Colour "x Failed to add user $($user.UPN) to group $($group.Name) on $($group.Domain.DistinguishedName):" -Color $this.SystemColours.error
-                Write-Colour -StartTab 1 "$outputString" -Color $this.SystemColours.error
+                Write-Colour -StartTab 1 "$outputString" -Color $this.SystemColours.info
             }
         }
     }
