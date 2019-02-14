@@ -155,8 +155,7 @@ InModuleScope $mut {
             $group.UserAccountMembers += [ADUserAccount]::new("user1", $domain)
 
             $ADChanges = [ADChanges]::new()
-            $ADChanges.SystemColours = $systemColours
-
+            
             Traverse-Group $group $ADChanges
 
             It "Checks the group exists" {
