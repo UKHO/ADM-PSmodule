@@ -116,7 +116,7 @@ class ADChanges {
             "remove" = "Red";
             "modify" = "Yellow";
             "error" = "Magenta";
-            "header" = "Blue";
+            "process" = "Blue";
             "detail" = "Gray";
         }
         $this.RemoveUserFromGroup = @()
@@ -133,6 +133,12 @@ class ADChanges {
         $this.RemovedGroups = 0
         $this.DeletedGroups = 0
         $this.h = Get-Host 
+        
+        Write-Colour -LinesBefore 1 "Actions are indicated with the following symbols:" -Color $this.SystemColours.info
+        Write-Colour -StartTab 1 "+", " adding or creating" -Color $this.SystemColours.adding, $this.SystemColours.info
+        Write-Colour -StartTab 1 "-", " removing or deleting" -Color $this.SystemColours.remove, $this.SystemColours.info
+        Write-Colour -StartTab 1 "~", " modification or change" -Color $this.SystemColours.modify, $this.SystemColours.info
+        Write-Colour -StartTab 1 "x", " errors have occurred"  -Color $this.SystemColours.error, $this.SystemColours.info
     }
     
     # Stores all strings output to the host during the "changes" phase
@@ -344,6 +350,8 @@ class ADChanges {
     }
 
     ApplyChanges(){
+        Write-Colour -LinesBefore 4 "UKHO.ADM will now apply the changes" -Color $this.SystemColours.process
+
         # Creates new OUs, groups, adds and removes users to groups
         foreach ($createO in $this.CreateOU) {
             Invoke-Scriptblock $createO
