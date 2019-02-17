@@ -161,7 +161,7 @@ class ADChanges {
                 Write-Verbose "Attempting to create OU $($ADOrganisationalUnit.DistinguishedName)"
                 try {
                     New-ADOrganizationalUnit $ADOrganisationalUnit.Name -Path $ADOrganisationalUnit.ParentOrganistaionalUnit -Server $ADOrganisationalUnit.Domain.DomainController -Credential $ADOrganisationalUnit.Domain.Credential
-                    Write-Colour -LinesBefore 2 -StartTab 1 "+ CREATED OU $($ADOrganisationalUnit.Name) on $($ADOrganisationalUnit.Domain.FQDN)" -Color Green
+                    Write-Colour -LinesBefore 2 -StartTab 1 $currentAction -Color Green
                     Write-Colour -StartTab 2 "$($ADOrganisationalUnit.DistinguishedName)" -Color White
                 }
                 Catch {
@@ -193,7 +193,7 @@ class ADChanges {
                 
                 try {
                     New-ADGroup -Name $group.Name -GroupScope $n.GroupScope -Path $n.Path -GroupCategory "Security" -Confirm:$false -Server $Group.Domain.DomainController -Credential $Group.Domain.Credential
-                    Write-Colour -LinesBefore 1 -StartTab 1 "+ CREATED GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Green
+                    Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Green
                     Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
                 }
                 catch {
@@ -214,9 +214,9 @@ class ADChanges {
 
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            $this.currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
-            if ($this.currentAction -ne $this.lastAction) {
-                Write-Colour -StartTab 1 $this.lastAction -Color Yellow
+            $currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
+            if ($currentAction -ne $this.lastAction) {
+                Write-Colour -StartTab 1 -LinesBefore 1 $currentAction -Color Yellow
                 Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
             }
             Write-Colour -StartTab 2 "- Remove User $($user.UPN)" -Color Red
@@ -227,8 +227,10 @@ class ADChanges {
                 Write-Verbose "Attempting to remove user $($user.SamAccountName) from group $($group.DistinguishedName)"
                 try {
                     Remove-ADGroupMember -Identity $group.DistinguishedName -Members $user.SamAccountName -Confirm:$false -Server $group.Domain.DomainController  -Credential $group.Domain.Credential
-                    Write-Colour -LinesBefore 1 -StartTab 1 "~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                    Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    if ($currentAction -ne $this.lastAction) {
+                        Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
+                        Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    }
                     Write-Colour -StartTab 2 "- REMOVED USER $($user.UPN)" -Color Red 
                     Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color White
                 }
@@ -240,6 +242,7 @@ class ADChanges {
             }.GetNewClosure() 
             
             $this.RemoveUserFromGroup += $f
+            $this.lastAction = $currentAction
         }   
     }
 
@@ -249,8 +252,12 @@ class ADChanges {
     
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
-                Write-Colour -LinesBefore 1 -StartTab 1 "~Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White            
+                $currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
+                $lastActionAlt = "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)"
+                if ($currentAction -ne $this.lastAction -and $lastActionAlt -ne $this.lastAction) {
+                    Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
+                    Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                }            
                 Write-Colour -StartTab 2 "+ Add User $($user.UPN)" -Color Green
                 Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color White
                 $this.AddedUsers += 1
@@ -258,8 +265,10 @@ class ADChanges {
                     Write-Verbose "Attempting to add user $($user.SamAccountName) to group $($group.DistinguishedName)"
                     try {                                        
                         Add-ADGroupMember -Identity $group.DistinguishedName -Members $user.SamAccountName -Confirm:$false -Server $User.Domain.DomainController -Credential $User.Domain.Credential
-                        Write-Colour -LinesBefore 1 -StartTab 1 "~Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                        Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                        if ($currentAction -eq $this.lastAction -and $lastActionAlt -ne $this.lastAction) {                        
+                            Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
+                            Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                        }
                         Write-Colour -StartTab 2 "+ ADDED USER $($user.UPN)" -Color Green
                         Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color White
                     }
@@ -270,6 +279,7 @@ class ADChanges {
                     }                
                 }.GetNewClosure()         
                 $this.AddUserToGroup += $f
+                $this.lastAction = $currentAction
             }
         }
         else {
@@ -286,8 +296,11 @@ class ADChanges {
         $outputString = "REMOVE GROUP $($groupMember.DistinguishedName) FROM GROUP $($group.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Colour -LinesBefore 1 -StartTab 1 "~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-            Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+            $currentAction = "~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)"
+            if ($currentAction -ne $this.lastAction) {
+                Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
+                Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+            }
             Write-Colour -StartTab 2 "- REMOVE GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
             Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
             $this.RemovedGroups += 1
@@ -296,8 +309,10 @@ class ADChanges {
                 Write-Verbose "Attempting to remove group $($groupMember.DistinguishedName) from group $($group.DistinguishedName)"
                 try {                
                     Remove-ADGroupMember -Identity $group.DistinguishedName -Members $groupMember.DistinguishedName -Confirm:$false -Server $group.Domain.DomainController -Credential $group.Domain.Credential # Remove the the groupMember AD object to the group
-                    Write-Colour -LinesBefore 1 -StartTab 1 "~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-                    Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    if ($currentAction -ne $this.lastAction) {
+                        Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
+                        Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    }
                     Write-Colour -StartTab 2 "- REMOVED GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color Red
                     Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
                 }
@@ -309,6 +324,7 @@ class ADChanges {
 
             }.GetNewClosure()         
             $this.RemoveGroupMemberFromGroup += $f
+            $this.lastAction = $currentAction
         }  
     }
 
@@ -316,8 +332,12 @@ class ADChanges {
         $outputString = "ADD GROUP $($groupMember.DistinguishedName) TO GROUP $($group.DistinguishedName)"
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            Write-Colour -LinesBefore 1 -StartTab 1 "~ Modify Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
-            Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+            $currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
+            $lastActionAlt = "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)"
+            if ($currentAction -ne $this.lastAction -and $this.lastAction -ne $lastActionAlt) {
+                Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
+                Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+            }
             Write-Colour -StartTab 2 "+ Add Group $($groupMember.Name) on $($groupMember.Domain.DistinguishedName)" -Color Green
             Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
             $this.AddedGroups += 1
@@ -327,8 +347,10 @@ class ADChanges {
                 try {
                     $gm = Get-ADGroup -Identity $groupMember.DistinguishedName -Server $groupMember.Domain.DomainController # Get the actual AD object for the groupMember that needs to be added
                     Add-ADGroupMember -Identity $group.DistinguishedName -Members $gm -Confirm:$false -Server $group.Domain.DomainController -Credential $group.Domain.Credential # Add the the groupMember AD object to the group
-                    Write-Colour -LinesBefore 1 -StartTab 1 "~ Modified Group $($group.Name) on $($group.Domain.FQDN)" -Color Yellow
+                    if($currentAction -ne $this.lastAction -and $this.lastAction -ne $lastActionAlt) {
+                    Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color Yellow
                     Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color White
+                    }
                     Write-Colour -StartTab 2 "+ Added Group $($groupMember.DistinguishedName) on $($groupMember.Domain.DistinguishedName)" -Color Green
                     Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color White
                 }
