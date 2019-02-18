@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '5.1.3'
+    ModuleVersion = '5.1.4'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -108,6 +108,7 @@
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            5.1.4) implementation of SystemColour on ADChanges Object
             5.1.3) using PSWriteColor v0.85 to use Write-Colour call
             5.1.2) implementing Write-Color better
             5.1.1) fixed parameter on Write-Color call
