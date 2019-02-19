@@ -12,7 +12,7 @@
     RootModule = 'UKHO.ADM.psm1'
     
     # Version number of this module.
-    ModuleVersion = '5.1.3'
+    ModuleVersion = '5.1.5'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
