@@ -240,7 +240,6 @@ class ADChanges {
             }
         
             Write-Colour -StartTab 2 "- Remove User $($user.UPN)" -Color $this.SystemColours.remove
-            Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color $this.SystemColours.info
 
             $this.RemovedUsers += 1
             $f = {
@@ -254,7 +253,6 @@ class ADChanges {
                     }
         
                     Write-Colour -StartTab 2 "- REMOVED USER $($user.UPN)" -Color $this.SystemColours.remove 
-                    Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color $this.SystemColours.info
                 }
                 catch {
                     Write-Colour "x Failed to remove user $($user.SamAccountName) from group $($group.DistinguishedName):" -Color $this.SystemColours.error
@@ -283,7 +281,6 @@ class ADChanges {
                 }            
        
                 Write-Colour -StartTab 2 "+ Add User $($user.UPN)" -Color $this.SystemColours.adding
-                Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color $this.SystemColours.info
                 $this.AddedUsers += 1
 
                 $f = {
@@ -297,7 +294,6 @@ class ADChanges {
                         }
         
                         Write-Colour -StartTab 2 "+ ADDED USER $($user.UPN)" -Color $this.SystemColours.adding
-                        Write-Colour -StartTab 3 "$($user.DistinguishedName)" -Color $this.SystemColours.info
                     }
                     Catch {                
                         Write-Colour "x Failed to add user $($user.SamAccountName) to group $($group.DistinguishedName):" -Color $this.SystemColours.error
