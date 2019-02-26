@@ -108,6 +108,7 @@
     
             # ReleaseNotes of this module
             ReleaseNotes = '
+            5.1.5) Grouping events occuring on the same AD Group
             5.1.4) implementation of SystemColour on ADChanges Object
             5.1.3) using PSWriteColor v0.85 to use Write-Colour call
             5.1.2) implementing Write-Color better
