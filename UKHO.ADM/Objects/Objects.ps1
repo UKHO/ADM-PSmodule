@@ -276,15 +276,15 @@ class ADChanges {
     
             if ($this.StringContent.ContainsKey($outputString) -eq $false) {
                 $this.StringContent.Add($outputString, $true)
-                $currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
-                $actionArray = $currentAction, "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)"
+                $currentAction = "~ MODIFY GROUP $($group.Name) ON $($group.Domain.FQDN)"
+                $actionArray = $currentAction, "+ CREATE GROUP $($group.Name) ON $($group.Domain.FQDN)"
         
                 if ($actionArray -notcontains $this.lastAction) {
                     Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color $this.SystemColours.modify
                     Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
                 }            
        
-                Write-Colour -StartTab 2 "+ Add User $($user.UPN)" -Color $this.SystemColours.adding
+                Write-Colour -StartTab 2 "+ ADD USER $($user.UPN)" -Color $this.SystemColours.adding
                 $this.AddedUsers += 1
 
                 $f = {
@@ -327,14 +327,14 @@ class ADChanges {
         
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            $currentAction = "~ Modify GROUP $($group.Name) on $($group.Domain.FQDN)"
+            $currentAction = "~ MODIFY GROUP $($group.Name) ON $($group.Domain.FQDN)"
         
             if ($currentAction -ne $this.lastAction) {
                 Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color $this.SystemColours.modify
                 Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
             }
         
-            Write-Colour -StartTab 2 "- REMOVE GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color $this.SystemColours.remove
+            Write-Colour -StartTab 2 "- REMOVE GROUP $($groupMember.Name) ON $($groupMember.Domain.FQDN)" -Color $this.SystemColours.remove
             Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color $this.SystemColours.info
             $this.RemovedGroups += 1
 
@@ -348,7 +348,7 @@ class ADChanges {
                         Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
                     }
         
-                    Write-Colour -StartTab 2 "- REMOVED GROUP $($groupMember.Name) on $($groupMember.Domain.FQDN)" -Color $this.SystemColours.remove
+                    Write-Colour -StartTab 2 "- REMOVED GROUP $($groupMember.Name) ON $($groupMember.Domain.FQDN)" -Color $this.SystemColours.remove
                     Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color $this.SystemColours.info
                 }
                 catch {
@@ -370,7 +370,7 @@ class ADChanges {
         
         if ($this.StringContent.ContainsKey($outputString) -eq $false) {
             $this.StringContent.Add($outputString, $true)
-            $currentAction = "~ Modify Group $($group.Name) on $($group.Domain.FQDN)"
+            $currentAction = "~ MODIFY GROUP $($group.Name) on $($group.Domain.FQDN)"
             $actionArray = $currentAction, "+ CREATE GROUP $($group.Name) on $($group.Domain.FQDN)"
             
             if ($actionArray -notcontains $this.lastAction) {
@@ -378,7 +378,7 @@ class ADChanges {
                 Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
             }
             
-            Write-Colour -StartTab 2 "+ Add Group $($groupMember.Name) on $($groupMember.Domain.DistinguishedName)" -Color $this.SystemColours.adding
+            Write-Colour -StartTab 2 "+ ADD GROUP $($groupMember.Name) ON $($groupMember.Domain.DistinguishedName)" -Color $this.SystemColours.adding
             Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color $this.SystemColours.info
             $this.AddedGroups += 1
     
@@ -393,7 +393,7 @@ class ADChanges {
                         Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
                     }
 
-                    Write-Colour -StartTab 2 "+ Added Group $($groupMember.DistinguishedName) on $($groupMember.Domain.DistinguishedName)" -Color $this.SystemColours.adding
+                    Write-Colour -StartTab 2 "+ ADDED GROUP $($groupMember.DistinguishedName) ON $($groupMember.Domain.DistinguishedName)" -Color $this.SystemColours.adding
                     Write-Colour -StartTab 3 "$($groupMember.DistinguishedName)" -Color $this.SystemColours.info
                 }
                 catch {
