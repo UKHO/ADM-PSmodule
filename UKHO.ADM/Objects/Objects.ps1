@@ -239,7 +239,9 @@ class ADChanges {
                 Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
             }
         
-            Write-Colour -StartTab 2 "- REMOVE USER $($user.SamAccountName)" -Color $this.SystemColours.remove
+            $out = Split-UserDistinguishedName $user.DistinguishedName
+        
+            Write-Colour -StartTab 2 "- REMOVED USER $($user.CN) from $($out.DC)" -Color $this.SystemColours.remove 
 
             $this.RemovedUsers += 1
             $f = {
@@ -251,8 +253,10 @@ class ADChanges {
                         Write-Colour -LinesBefore 1 -StartTab 1 $currentAction -Color $this.SystemColours.modify
                         Write-Colour -StartTab 2 "$($group.DistinguishedName)" -Color $this.SystemColours.info
                     }
+
+                    $out = Split-UserDistinguishedName $user.DistinguishedName
         
-                    Write-Colour -StartTab 2 "- REMOVED USER $($user.SamAccountName)" -Color $this.SystemColours.remove 
+                    Write-Colour -StartTab 2 "- REMOVED USER $($user.CN) from $($out.DC)" -Color $this.SystemColours.remove 
                 }
                 catch {
                     Write-Colour "x Failed to remove user $($user.SamAccountName) from group $($group.DistinguishedName):" -Color $this.SystemColours.error
