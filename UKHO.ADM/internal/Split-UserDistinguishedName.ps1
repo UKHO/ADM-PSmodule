@@ -10,7 +10,19 @@ function Split-UserDistinguishedName {
     
     process {
         $splits = $distinguishedName.Split(",")
-        $CN = $splits[0].Split("=")[1];        
+        
+        $splits | ForEach-Object -begin {$CN = ""} -process { 
+            $split = $_
+            if($split -like "CN=*") {
+                $seq = $split.Split("=")[1];
+                if($CN -eq "") {
+                    $CN = $seq
+                }             
+                else {          
+                    $CN += ".$seq"
+                }
+            }        
+        }
 
         $splits | ForEach-Object -begin {$DC = ""} -process { 
             $split = $_
