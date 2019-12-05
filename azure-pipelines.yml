@@ -24,10 +24,9 @@ steps:
   displayName: Build package $(moduleName)
 
 # By default writes the results of  the tests to an NUnit XML file at $(Build.SourcesDirectory)\Test-Pester.XML
-- task: richardfennellBM.BM-VSTS-PesterRunner-Task.Pester-Task.Pester@6
+- script: '$(Build.SourcesDirectory)\UKHO.ADM.Tests\Run-Tests.ps1'
   displayName: Run Pester Tests
-  inputs:
-    scriptFolder: '$(Build.SourcesDirectory)\UKHO.ADM.Tests\Run-Tests.ps1'
+
  
 # Publish the NUnit XML
 - task: PublishTestResults@2
