@@ -1,6 +1,6 @@
 param($ManifestFilePath, $PreReleaseTag, $Branch)
 
-Import-Module $PSScriptRoot\..\UKHO.BuildAndDeploy
+Import-Module UKHO.BuildAndDeploy
 
 # Install required modules
 $ModuleLocation = (Split-Path $ManifestFilePath)
