@@ -3,9 +3,8 @@ resources:
   clean: true
 
 trigger:
-  branches:
-    include:
-      - refs/heads/*
+  - master
+
 variables:
   moduleName: 'UKHO.ADM'
   repositoryPublishUri: https://proget.ukho.gov.uk/nuget/ukho.psgallery/Packages
