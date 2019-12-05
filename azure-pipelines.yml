@@ -23,7 +23,7 @@ steps:
   displayName: Build package $(moduleName)
 
 # By default writes the results of  the tests to an NUnit XML file at $(Build.SourcesDirectory)\Test-Pester.XML
-- script: '$(Build.SourcesDirectory)\UKHO.ADM.Tests\Run-Tests.ps1'
+- powershell: '$(Build.SourcesDirectory)\UKHO.ADM.Tests\Run-Tests.ps1'
   displayName: Run Pester Tests
 
  
