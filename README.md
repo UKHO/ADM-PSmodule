@@ -24,7 +24,7 @@ Install relevant version for your [Windows Desktop version](https://support.micr
 
 ### PSWriteColor
 
-Local development requires PSWriteColor (version 0.83+) to be installed. When ADM is installed as a module(e.g. deploying on a server) PSWriteColor is installed automatically.
+Local development requires PSWriteColor (version 0.85+) to be installed. When ADM is installed as a module(e.g. deploying on a server) PSWriteColor is installed automatically.
 
 #### Install PSWriteColor
 
@@ -33,7 +33,7 @@ Run `./build/Import-RequiredModules.ps1` to install and import all required modu
 Alternatively manually install PSWriteColor:
 
 ```powershell
-Install-Module PSWriteColor -RequiredVersion 0.83
+Install-Module PSWriteColor -RequiredVersion 0.85
 ```
 
 ## Capabilities
