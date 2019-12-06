@@ -27,9 +27,6 @@ steps:
               -ManifestFilePath $(Build.SourcesDirectory)\$(moduleName)\$(moduleName).psd1'
   displayName: Run Pester Tests
         
-
-
- 
 # Publish the NUnit XML
 - task: PublishTestResults@2
   displayName: Publish Test Results
@@ -40,5 +37,5 @@ steps:
     testRunTitle: '$(Build.DefinitionName) Pester Tests'
 
 - powershell: | 
-    ./Deploy/DeployToFeed.ps1 -RepositoryName $(RepositoryName) -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetApiKey) -ModuleFolderPath $(Build.SourcesDirectory)\UKHO.ADM
+    ./Deploy/DeployToFeed.ps1 -RepositorySourceUri $(RepositorySourceUri) -RepositoryPublishUri $(RepositoryPublishUri) -NugetAPIKey $(NugetApiKey) -ModuleFolderPath $(Build.SourcesDirectory)\UKHO.ADM
   displayName: 'Publish module to feed'
